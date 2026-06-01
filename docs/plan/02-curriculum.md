@@ -6,172 +6,172 @@
 
 ## Chapter Overview Table
 
-| # | Chapter Title (Thai) | Difficulty | Bloom Levels |
+| # | Chapter Title | Difficulty | Bloom Levels |
 |---|---|---|---|
-| 1 | ทำไม Dependency Injection ถึงสำคัญ | Beginner | Remember, Understand, Analyze |
-| 2 | รู้จัก Google Wire และการติดตั้ง | Beginner | Remember, Understand, Apply |
-| 3 | Provider คืออะไร และ wire.Build | Beginner–Intermediate | Remember, Apply, Analyze |
-| 4 | Provider Sets และ wire.NewSet | Intermediate | Understand, Apply, Analyze |
-| 5 | wire.Bind — ผูก Interface กับ Concrete Type | Intermediate | Remember, Apply, Analyze |
+| 1 | Why Dependency Injection Matters | Beginner | Remember, Understand, Analyze |
+| 2 | Getting to Know Google Wire and Installation | Beginner | Remember, Understand, Apply |
+| 3 | What Is a Provider, and wire.Build | Beginner–Intermediate | Remember, Apply, Analyze |
+| 4 | Provider Sets and wire.NewSet | Intermediate | Understand, Apply, Analyze |
+| 5 | wire.Bind — Binding Interfaces to Concrete Types | Intermediate | Remember, Apply, Analyze |
 | 6 | wire.Struct — Field Injection | Intermediate | Understand, Apply |
-| 7 | Cleanup Functions และ Error Handling | Intermediate–Advanced | Understand, Apply, Evaluate |
-| 8 | Multiple Injectors และ Per-Request Scoping | Advanced | Apply, Analyze, Evaluate |
-| 9 | Integration กับ HTTP และ gRPC | Advanced | Apply, Analyze, Evaluate |
+| 7 | Cleanup Functions and Error Handling | Intermediate–Advanced | Understand, Apply, Evaluate |
+| 8 | Multiple Injectors and Per-Request Scoping | Advanced | Apply, Analyze, Evaluate |
+| 9 | Integration with HTTP and gRPC | Advanced | Apply, Analyze, Evaluate |
 | 10 | Capstone Project | Advanced | Create, Evaluate |
 
 ---
 
-## Chapter 1: ทำไม Dependency Injection ถึงสำคัญ
+## Chapter 1: Why Dependency Injection Matters
 
 **Bloom levels:** Remember, Understand, Analyze
 
 **Learning Objectives:**
-1. (Remember) อธิบายได้ว่า Dependency Injection คืออะไร และแก้ปัญหาอะไร
-2. (Understand) เปรียบเทียบ manual wiring กับ DI framework ได้
-3. (Understand) อธิบายความแตกต่างระหว่าง compile-time DI (Wire) กับ runtime DI (Uber fx/dig) ได้
-4. (Analyze) ระบุได้ว่า codebase แบบใดได้ประโยชน์จาก DI และแบบใดไม่ต้องการ
+1. (Remember) Explain what Dependency Injection is and what problem it solves
+2. (Understand) Compare manual wiring with a DI framework
+3. (Understand) Explain the difference between compile-time DI (Wire) and runtime DI (Uber fx/dig)
+4. (Analyze) Identify which kinds of codebases benefit from DI and which do not need it
 
 **Key Topics:**
-- ปัญหาของ manual constructor chaining: `main.go` ที่ยาวและเปราะบาง
+- The problem of manual constructor chaining: a long, fragile `main.go`
 - Constructor injection vs field injection vs service locator
 - Runtime DI (reflection-based, errors at runtime) vs compile-time DI (code-gen, errors at `wire` run / compile time)
-- ทำไม Wire เลือก code generation: zero reflection overhead, errors surface early, generated code readable
+- Why Wire chose code generation: zero reflection overhead, errors surface early, generated code readable
 
 **Code Snippet Ideas:**
-- "Before" example: `main.go` สร้าง dependency chain ด้วย manual constructor calls 5 ชั้น
-- "After" preview: injector function 3 บรรทัดที่ Wire สร้างให้ (แค่ดู ยังไม่ต้องเข้าใจ)
-- เปรียบเทียบ error message: runtime DI panic vs Wire compile error
+- "Before" example: a `main.go` that builds a dependency chain with 5 layers of manual constructor calls
+- "After" preview: a 3-line injector function that Wire generates for you (just to look at — no need to understand it yet)
+- Error message comparison: runtime DI panic vs Wire compile error
 
 **Common Pitfalls:**
-1. เข้าใจผิดว่า Wire เป็น "service locator" — Wire ไม่มี runtime container; มันสร้าง code ธรรมดาก่อน compile
-2. คิดว่า DI ทุกอย่างต้องใช้ framework — small projects อาจยังใช้ manual wiring ได้ดีกว่า
+1. Misunderstanding Wire as a "service locator" — Wire has no runtime container; it generates plain code before compilation
+2. Thinking every DI scenario requires a framework — small projects may still be better off with manual wiring
 
-**Hands-on Deliverable:** เขียน `main.go` แบบ manual wiring สำหรับ service ง่าย ๆ (3 dependency) แล้ว annotate ว่าส่วนไหนจะ "หาย" หากใช้ Wire
+**Hands-on Deliverable:** Write a manual-wiring `main.go` for a simple service (3 dependencies), then annotate which parts would "disappear" if Wire were used
 
 ---
 
-## Chapter 2: รู้จัก Google Wire และการติดตั้ง
+## Chapter 2: Getting to Know Google Wire and Installation
 
 **Bloom levels:** Remember, Understand, Apply
 
 **Learning Objectives:**
-1. (Remember) บอกได้ว่า `wire` CLI ทำหน้าที่อะไร และอยู่ที่ไหนใน workflow
-2. (Understand) อธิบายบทบาทของ `wire.go` (stub) และ `wire_gen.go` (generated) ได้
-3. (Apply) ติดตั้ง `wire` CLI และสร้าง project โครงสร้างเบื้องต้นได้
-4. (Apply) ตั้งค่า `go:generate` directive เพื่อรัน `wire` ได้
-5. (Understand) อธิบาย build tag `//go:build wireinject` และ `//go:build !wireinject` ได้
+1. (Remember) State what the `wire` CLI does and where it fits in the workflow
+2. (Understand) Explain the roles of `wire.go` (stub) and `wire_gen.go` (generated)
+3. (Apply) Install the `wire` CLI and create a basic project structure
+4. (Apply) Set up a `go:generate` directive to run `wire`
+5. (Understand) Explain the build tags `//go:build wireinject` and `//go:build !wireinject`
 
 **Key Topics:**
 - `go install github.com/google/wire/cmd/wire@latest`
 - Project layout: `wire.go` (hand-written stub) + `wire_gen.go` (generated, commit to VCS)
-- `//go:build wireinject` บน stub file — บอก Wire ว่าไฟล์นี้คือ input; compiler จะข้าม
-- `//go:build !wireinject` บน `wire_gen.go` — ใช้ตอน compile จริง; อย่าแก้ด้วยมือ
-- `//go:generate wire` directive ใน package
-- `wire` command: อ่าน stub → วิเคราะห์ dependency graph → สร้าง `wire_gen.go`
+- `//go:build wireinject` on the stub file — tells Wire this file is the input; the compiler skips it
+- `//go:build !wireinject` on `wire_gen.go` — used during the real compile; do not edit by hand
+- The `//go:generate wire` directive in the package
+- The `wire` command: reads the stub → analyzes the dependency graph → generates `wire_gen.go`
 
 **Code Snippet Ideas:**
-- Structure ของ stub file: package declaration, build tag, import `"github.com/google/wire"`, injector signature, `wire.Build(...)`, throwaway return
-- Output `wire_gen.go` ที่ Wire สร้าง (แสดงว่าเป็น Go code ธรรมดา)
-- `//go:generate wire` บรรทัดเดียว
+- Structure of the stub file: package declaration, build tag, `import "github.com/google/wire"`, injector signature, `wire.Build(...)`, throwaway return
+- The `wire_gen.go` output that Wire generates (showing it is plain Go code)
+- A single `//go:generate wire` line
 
 **Common Pitfalls:**
-1. ลืม build tag `//go:build wireinject` — compiler จะพยายาม compile stub และ fail เพราะ body ไม่ถูกต้อง
-2. แก้ไข `wire_gen.go` ด้วยมือ — จะถูก overwrite ทุกครั้งที่รัน `wire`; ให้แก้ที่ stub หรือ providers เสมอ
+1. Forgetting the `//go:build wireinject` build tag — the compiler will try to compile the stub and fail because the body is invalid
+2. Editing `wire_gen.go` by hand — it gets overwritten every time `wire` runs; always edit the stub or the providers instead
 
-**Hands-on Deliverable:** สร้าง Go module, เขียน stub injector สำหรับ struct ง่าย ๆ, รัน `wire` สำเร็จ, ตรวจสอบว่า `wire_gen.go` ถูกสร้าง
+**Hands-on Deliverable:** Create a Go module, write a stub injector for a simple struct, run `wire` successfully, and verify that `wire_gen.go` was generated
 
 ---
 
-## Chapter 3: Provider คืออะไร และ wire.Build
+## Chapter 3: What Is a Provider, and wire.Build
 
 **Bloom levels:** Remember, Apply, Analyze
 
 **Learning Objectives:**
-1. (Remember) นิยาม "provider" ในบริบท Wire ได้
-2. (Apply) เขียน provider function ที่ถูกต้องได้ (signature rules)
-3. (Apply) ใช้ `wire.Build` ใน injector stub ได้
-4. (Analyze) อ่าน error message ของ Wire เพื่อหา missing หรือ duplicate provider ได้
-5. (Analyze) trace dependency graph จาก injector return type ย้อนกลับไปหา providers ได้
+1. (Remember) Define "provider" in the context of Wire
+2. (Apply) Write a correct provider function (signature rules)
+3. (Apply) Use `wire.Build` in an injector stub
+4. (Analyze) Read Wire's error messages to find a missing or duplicate provider
+5. (Analyze) Trace the dependency graph from the injector's return type back to the providers
 
 **Key Topics:**
-- Provider: function ที่ return type `T` (หรือ `(T, error)`) — Wire ใช้ return type เป็น "key"
-- Signature rules: exported หรือ unexported ได้; args คือ dependencies; return เป็น value หรือ pointer
-- `wire.Build(providerA, providerB, ...)` — list ของ provider (และ provider sets) ที่ Wire ใช้สร้าง graph
-- Injector body: `wire.Build(...)` + throwaway return เช่น `return App{}, nil` หรือ `panic("wire")`
-- Wire resolve dependency graph: match return types กับ parameter types แบบ topological sort
-- Duplicate provider error: สอง providers return type เดียวกัน
-- Missing provider error: ไม่มี provider สำหรับ type ที่ต้องการ
+- Provider: a function returning type `T` (or `(T, error)`) — Wire uses the return type as the "key"
+- Signature rules: may be exported or unexported; args are dependencies; the return may be a value or a pointer
+- `wire.Build(providerA, providerB, ...)` — the list of providers (and provider sets) Wire uses to build the graph
+- Injector body: `wire.Build(...)` + a throwaway return such as `return App{}, nil` or `panic("wire")`
+- Wire resolves the dependency graph: matching return types to parameter types via topological sort
+- Duplicate provider error: two providers return the same type
+- Missing provider error: there is no provider for a required type
 
 **Code Snippet Ideas:**
 - Provider chain: `NewDB() *sql.DB`, `NewUserRepo(db *sql.DB) *UserRepo`, `NewUserService(repo *UserRepo) *UserService`
 - Injector stub: `func InitializeApp() *UserService { wire.Build(NewDB, NewUserRepo, NewUserService); return nil }`
-- Wire error output เมื่อ provider ขาด
+- Wire error output when a provider is missing
 
 **Common Pitfalls:**
-1. Provider return pointer แต่ dependency expect value (หรือกลับกัน) — Wire ถือว่า `*T` และ `T` คนละ type
-2. เขียน logic ใน injector body นอกจาก `wire.Build` — Wire อ่านแค่ `wire.Build` call; logic อื่นถูกละเว้น
+1. A provider returns a pointer but the dependency expects a value (or vice versa) — Wire treats `*T` and `T` as different types
+2. Writing logic in the injector body other than `wire.Build` — Wire reads only the `wire.Build` call; other logic is ignored
 
-**Hands-on Deliverable:** สร้าง provider chain 4 ชั้น, เขียน injector, รัน `wire`, แก้ error จนผ่าน
+**Hands-on Deliverable:** Build a 4-layer provider chain, write an injector, run `wire`, and fix errors until it passes
 
 ---
 
-## Chapter 4: Provider Sets และ wire.NewSet
+## Chapter 4: Provider Sets and wire.NewSet
 
 **Bloom levels:** Understand, Apply, Analyze
 
 **Learning Objectives:**
-1. (Understand) อธิบายประโยชน์ของ `wire.NewSet` ในการจัดกลุ่ม providers ได้
-2. (Apply) สร้าง provider set สำหรับ layer (repository, service, handler) ได้
-3. (Apply) compose provider sets ที่ซ้อนกันได้ (set ภายใน set)
-4. (Analyze) ออกแบบ provider set boundaries ให้สอดคล้องกับ package/layer structure ได้
+1. (Understand) Explain the benefit of `wire.NewSet` for grouping providers
+2. (Apply) Create a provider set for a layer (repository, service, handler)
+3. (Apply) Compose nested provider sets (a set within a set)
+4. (Analyze) Design provider set boundaries to align with the package/layer structure
 
 **Key Topics:**
 - `var RepoSet = wire.NewSet(NewDB, NewUserRepo, NewProductRepo)`
-- Set composition: `wire.NewSet(RepoSet, ServiceSet)` — sets สามารถ reference sets อื่น
-- ประโยชน์: reuse sets ข้าม injectors, จัดกลุ่มตาม domain/layer, ลด noise ใน `wire.Build`
-- แนวทาง: ประกาศ set ใน package เดียวกับ providers; expose เป็น exported var
-- Set ไม่ใช่ runtime object — Wire "unfolds" ทุก set เป็น flat list ตอน codegen
+- Set composition: `wire.NewSet(RepoSet, ServiceSet)` — sets can reference other sets
+- Benefits: reuse sets across injectors, group by domain/layer, reduce noise in `wire.Build`
+- Guideline: declare the set in the same package as the providers; expose it as an exported var
+- A set is not a runtime object — Wire "unfolds" every set into a flat list at codegen time
 
 **Code Snippet Ideas:**
 - `var RepositorySet = wire.NewSet(NewPostgresDB, NewUserRepository, NewOrderRepository)`
 - `var ApplicationSet = wire.NewSet(RepositorySet, ServiceSet, HandlerSet)`
-- Injector: `wire.Build(ApplicationSet)` แทนที่จะ list providers ทีละตัว
+- Injector: `wire.Build(ApplicationSet)` instead of listing providers one by one
 
 **Common Pitfalls:**
-1. ใส่ provider ซ้ำใน set และใน `wire.Build` โดยตรง — Wire ฟ้อง duplicate provider error
-2. สร้าง set ที่ใหญ่เกินไปจนไม่สามารถ reuse ได้ — ควร set ต่อ layer/domain ไม่ใช่ "one global set"
+1. Including a provider both in a set and directly in `wire.Build` — Wire reports a duplicate provider error
+2. Creating a set so large it cannot be reused — prefer a set per layer/domain, not "one global set"
 
-**Hands-on Deliverable:** Refactor injector จาก Chapter 3 โดยจัด providers เป็น 2 sets (infra, domain); ตรวจสอบว่า `wire_gen.go` เหมือนเดิม
+**Hands-on Deliverable:** Refactor the injector from Chapter 3 by organizing providers into 2 sets (infra, domain); verify that `wire_gen.go` stays the same
 
 ---
 
-## Chapter 5: wire.Bind — ผูก Interface กับ Concrete Type
+## Chapter 5: wire.Bind — Binding Interfaces to Concrete Types
 
 **Bloom levels:** Remember, Apply, Analyze
 
 **Learning Objectives:**
-1. (Remember) อธิบายว่าทำไม Wire ต้องการ `wire.Bind` เมื่อ dependency เป็น interface ได้
-2. (Apply) เขียน `wire.Bind(new(MyInterface), new(*MyConcrete))` ได้ถูกต้อง
-3. (Apply) รวม `wire.Bind` เข้ากับ provider set ได้
-4. (Analyze) วินิจฉัยได้ว่าเมื่อไหรควรใช้ interface (testability, multiple implementations) vs struct โดยตรง
+1. (Remember) Explain why Wire needs `wire.Bind` when a dependency is an interface
+2. (Apply) Write `wire.Bind(new(MyInterface), new(*MyConcrete))` correctly
+3. (Apply) Incorporate `wire.Bind` into a provider set
+4. (Analyze) Diagnose when to use an interface (testability, multiple implementations) vs a struct directly
 
 **Key Topics:**
-- Wire match dependencies ด้วย type — ถ้า consumer ต้องการ `UserRepository` (interface) แต่มีแค่ `*postgresUserRepo` provider จะ fail
-- `wire.Bind(new(UserRepository), new(*postgresUserRepo))` — สอง args ต้องเป็น `new(...)` เสมอ
-- Concrete type (`*postgresUserRepo`) ต้องมี provider อยู่แล้วใน set/`wire.Build`
-- `wire.Bind` ใส่ใน `wire.NewSet(...)` หรือ `wire.Build(...)` ได้โดยตรง
-- Use case หลัก: testing (swap mock), multiple environments (prod vs stub)
+- Wire matches dependencies by type — if a consumer needs `UserRepository` (an interface) but only a `*postgresUserRepo` provider exists, it will fail
+- `wire.Bind(new(UserRepository), new(*postgresUserRepo))` — both args must always be `new(...)`
+- The concrete type (`*postgresUserRepo`) must already have a provider in the set/`wire.Build`
+- `wire.Bind` can go directly inside `wire.NewSet(...)` or `wire.Build(...)`
+- Main use cases: testing (swap in a mock), multiple environments (prod vs stub)
 
 **Code Snippet Ideas:**
 - Interface + concrete: `type UserRepository interface { ... }` / `type postgresUserRepo struct { ... }`
-- Provider for concrete: `func NewPostgresUserRepo(db *sql.DB) *postgresUserRepo`
-- Bind in set: `wire.NewSet(NewPostgresUserRepo, wire.Bind(new(UserRepository), new(*postgresUserRepo)))`
+- Provider for the concrete: `func NewPostgresUserRepo(db *sql.DB) *postgresUserRepo`
+- Bind in a set: `wire.NewSet(NewPostgresUserRepo, wire.Bind(new(UserRepository), new(*postgresUserRepo)))`
 
 **Common Pitfalls:**
-1. ใช้ `wire.Bind(new(Iface), new(Concrete))` โดยไม่มี provider สำหรับ `*Concrete` — Wire ฟ้อง missing provider
-2. สลับ argument order: `wire.Bind(new(*Concrete), new(Iface))` — ผิด; arg แรกคือ interface, arg สองคือ concrete
+1. Using `wire.Bind(new(Iface), new(Concrete))` without a provider for `*Concrete` — Wire reports a missing provider
+2. Swapping the argument order: `wire.Bind(new(*Concrete), new(Iface))` — wrong; the first arg is the interface, the second is the concrete
 
-**Hands-on Deliverable:** แทนที่ struct dependency ด้วย interface, เพิ่ม `wire.Bind`, รัน `wire` สำเร็จ; เขียน second injector สำหรับ test ที่ bind mock แทน
+**Hands-on Deliverable:** Replace a struct dependency with an interface, add `wire.Bind`, run `wire` successfully; write a second injector for tests that binds a mock instead
 
 ---
 
@@ -180,139 +180,139 @@
 **Bloom levels:** Understand, Apply
 
 **Learning Objectives:**
-1. (Understand) อธิบายความแตกต่างระหว่าง constructor injection กับ `wire.Struct` field injection ได้
-2. (Apply) ใช้ `wire.Struct(new(T), "*")` เพื่อ inject ทุก exported field ได้
-3. (Apply) ใช้ `wire.Struct(new(T), "FieldA", "FieldB")` เพื่อ inject เฉพาะ field ที่เลือกได้
-4. (Understand) รู้ว่า unexported fields ไม่สามารถ inject ด้วย `wire.Struct` ได้
+1. (Understand) Explain the difference between constructor injection and `wire.Struct` field injection
+2. (Apply) Use `wire.Struct(new(T), "*")` to inject every exported field
+3. (Apply) Use `wire.Struct(new(T), "FieldA", "FieldB")` to inject only selected fields
+4. (Understand) Know that unexported fields cannot be injected with `wire.Struct`
 
 **Key Topics:**
-- `wire.Struct(new(MyHandler), "*")` — inject ทุก exported field ของ `MyHandler`
-- `wire.Struct(new(MyHandler), "DB", "Logger")` — inject เฉพาะ field ที่ระบุ
-- Wire สร้าง code เทียบเท่า `&MyHandler{DB: db, Logger: logger}`
-- Unexported fields ถูกละเว้น; ถ้า inject field ที่ไม่มี provider Wire จะ error
-- เปรียบเทียบ: `wire.Struct` เหมาะเมื่อ struct มี fields มากและไม่ต้องการเขียน constructor
-- ข้อเสีย: fields ต้อง exported; ลด encapsulation เล็กน้อย
+- `wire.Struct(new(MyHandler), "*")` — inject every exported field of `MyHandler`
+- `wire.Struct(new(MyHandler), "DB", "Logger")` — inject only the specified fields
+- Wire generates code equivalent to `&MyHandler{DB: db, Logger: logger}`
+- Unexported fields are ignored; if you try to inject a field that has no provider, Wire errors
+- Comparison: `wire.Struct` is a good fit when a struct has many fields and you do not want to write a constructor
+- Downside: fields must be exported; this slightly reduces encapsulation
 
 **Code Snippet Ideas:**
-- Struct ที่มี 4 exported fields: `DB`, `Cache`, `Logger`, `Config`
-- `wire.Struct(new(AppHandler), "*")` ใน wire.Build
-- เปรียบเทียบกับ `NewAppHandler(db, cache, logger, cfg) *AppHandler`
+- A struct with 4 exported fields: `DB`, `Cache`, `Logger`, `Config`
+- `wire.Struct(new(AppHandler), "*")` inside wire.Build
+- Comparison with `NewAppHandler(db, cache, logger, cfg) *AppHandler`
 
 **Common Pitfalls:**
-1. คาดหวังว่า Wire จะ inject unexported field — จะถูกละเว้นอย่างเงียบ; ต้องทำให้เป็น exported หรือใช้ constructor
-2. ใช้ `wire.Struct` กับ type ที่ต้องการ initialization logic — ควรใช้ constructor provider แทน
+1. Expecting Wire to inject an unexported field — it is silently ignored; you must export it or use a constructor
+2. Using `wire.Struct` for a type that needs initialization logic — use a constructor provider instead
 
-**Hands-on Deliverable:** แปลง handler struct ที่มี constructor ให้ใช้ `wire.Struct` แทน; ตรวจสอบ `wire_gen.go` ที่สร้าง
+**Hands-on Deliverable:** Convert a handler struct that has a constructor to use `wire.Struct` instead; inspect the generated `wire_gen.go`
 
 ---
 
-## Chapter 7: Cleanup Functions และ Error Handling
+## Chapter 7: Cleanup Functions and Error Handling
 
 **Bloom levels:** Understand, Apply, Evaluate
 
 **Learning Objectives:**
-1. (Understand) อธิบาย return signature ของ provider ที่มี cleanup ได้: `(T, func())` หรือ `(T, func(), error)`
-2. (Apply) เขียน provider ที่ return cleanup function สำหรับ resource เช่น DB connection, file handle ได้
-3. (Understand) อธิบาย LIFO cleanup order ได้ และเหตุผลที่ใช้ LIFO
-4. (Evaluate) วิเคราะห์ได้ว่า error ระหว่าง initialization จะ trigger cleanup ของ resource ที่สร้างไปก่อนหน้าอย่างไร
-5. (Apply) จัดการ error จาก injector ที่มี provider error ได้ถูกต้อง
+1. (Understand) Explain the return signature of a provider with cleanup: `(T, func())` or `(T, func(), error)`
+2. (Apply) Write a provider that returns a cleanup function for a resource such as a DB connection or file handle
+3. (Understand) Explain LIFO cleanup order and the reason for using LIFO
+4. (Evaluate) Analyze how an error during initialization triggers cleanup of resources created earlier
+5. (Apply) Correctly handle an error from an injector that has a provider error
 
 **Key Topics:**
-- Provider signatures ที่ Wire รองรับ: `(T)`, `(T, error)`, `(T, func())`, `(T, func(), error)`
-- Wire aggregate cleanup functions: injector return signature จะเป็น `(T, func(), error)` หรือ `(T, func())`
-- **LIFO order:** cleanup รันจากหลังไปหน้า — resource ที่สร้างทีหลังถูก cleanup ก่อน (เช่น close HTTP server ก่อน close DB)
-- **Error mid-initialization:** ถ้า provider B fail หลังจาก provider A สำเร็จ Wire จะรัน cleanup ของ A ก่อน return error
-- Caller ต้อง `defer cleanup()` หลังเรียก injector
-- ไม่ควรเรียก cleanup โดยตรงใน provider — ส่ง func กลับให้ Wire จัดการ
+- Provider signatures Wire supports: `(T)`, `(T, error)`, `(T, func())`, `(T, func(), error)`
+- Wire aggregates cleanup functions: the injector's return signature becomes `(T, func(), error)` or `(T, func())`
+- **LIFO order:** cleanup runs back to front — resources created later are cleaned up first (e.g., close the HTTP server before closing the DB)
+- **Error mid-initialization:** if provider B fails after provider A succeeds, Wire runs A's cleanup before returning the error
+- The caller must `defer cleanup()` after calling the injector
+- A provider should not call cleanup directly — return the func and let Wire manage it
 
 **Code Snippet Ideas:**
-- `func NewDB(cfg Config) (*sql.DB, func(), error)` — เปิด DB, return `db.Close` เป็น cleanup
-- `func NewServer(handler http.Handler) (*http.Server, func())` — return shutdown func
+- `func NewDB(cfg Config) (*sql.DB, func(), error)` — open the DB, return `db.Close` as cleanup
+- `func NewServer(handler http.Handler) (*http.Server, func())` — return a shutdown func
 - Caller pattern: `app, cleanup, err := InitApp(); if err != nil { ... }; defer cleanup()`
-- Diagram: cleanup call order A→B→C สร้าง, C→B→A cleanup
+- Diagram: creation call order A→B→C, cleanup order C→B→A
 
 **Common Pitfalls:**
-1. ลืม `defer cleanup()` ใน caller — resource leak; Wire สร้าง cleanup แต่ไม่รันให้อัตโนมัติ
-2. Provider close resource ด้วยตัวเองแทนที่จะ return cleanup func — cleanup จะไม่ถูกรวมเข้า LIFO chain
+1. Forgetting `defer cleanup()` in the caller — resource leak; Wire generates cleanup but does not run it automatically
+2. A provider closing the resource itself instead of returning a cleanup func — the cleanup will not be folded into the LIFO chain
 
-**Hands-on Deliverable:** เพิ่ม cleanup func ให้ DB และ HTTP server provider; เขียน `main.go` ที่ `defer cleanup()` ถูกต้อง; ทดสอบ graceful shutdown ด้วย Ctrl+C
+**Hands-on Deliverable:** Add cleanup funcs to the DB and HTTP server providers; write a `main.go` that correctly `defer cleanup()`; test graceful shutdown with Ctrl+C
 
 ---
 
-## Chapter 8: Multiple Injectors และ Per-Request Scoping
+## Chapter 8: Multiple Injectors and Per-Request Scoping
 
 **Bloom levels:** Apply, Analyze, Evaluate
 
 **Learning Objectives:**
-1. (Apply) สร้าง injectors หลายตัวในหนึ่ง package สำหรับ context ต่างกัน (production, test, integration) ได้
-2. (Analyze) อธิบายได้ว่า Wire ไม่มี runtime scope — "scoping" ทำด้วยการออกแบบ injector ที่รับ parameter
-3. (Apply) สร้าง per-request injector ที่รับ request-scoped values เป็น parameter ได้
-4. (Evaluate) เปรียบเทียบ trade-off ระหว่าง one-injector-per-request กับ passing values ผ่าน context ได้
+1. (Apply) Create multiple injectors in one package for different contexts (production, test, integration)
+2. (Analyze) Explain that Wire has no runtime scope — "scoping" is done by designing an injector that takes parameters
+3. (Apply) Create a per-request injector that takes request-scoped values as parameters
+4. (Evaluate) Compare the trade-offs between one-injector-per-request and passing values through context
 
 **Key Topics:**
-- Multiple injectors: สอง functions ใน `wire.go` เดียวกัน เช่น `InitAppProd()` และ `InitAppTest()`
-- Injector parameters: `func InitRequestHandler(r *http.Request, db *sql.DB) *RequestHandler` — Wire inject ที่ชั้น param ไม่ได้
-- **Per-request scoping — critical concept:** Wire ไม่มี `@RequestScope` แบบ Spring. วิธีที่ถูกต้องคือ เรียก injector function ทุก request, หรือ pass request-scoped data เป็น argument ให้ injector
-- Provider ที่รับ `*http.Request` เป็น arg: Wire จะ require caller ส่ง request มาตอน inject
-- แนะนำ: ใช้ request-scoped injector สำหรับ handler factories เท่านั้น — อย่า inject ทุกอย่าง per-request
-- Test injector: swap implementations ด้วย `wire.Bind` ต่างกันใน test injector
+- Multiple injectors: two functions in the same `wire.go`, e.g. `InitAppProd()` and `InitAppTest()`
+- Injector parameters: `func InitRequestHandler(r *http.Request, db *sql.DB) *RequestHandler` — Wire cannot inject at the parameter layer
+- **Per-request scoping — critical concept:** Wire has no Spring-style `@RequestScope`. The correct approach is to call the injector function for every request, or to pass request-scoped data as an argument to the injector
+- A provider that takes `*http.Request` as an arg: Wire will require the caller to pass the request at inject time
+- Recommendation: use a request-scoped injector for handler factories only — do not inject everything per request
+- Test injector: swap implementations with a different `wire.Bind` in the test injector
 
 **Code Snippet Ideas:**
 - Production injector: `func InitApp(cfg Config) (*App, func(), error)`
 - Test injector: `func InitTestApp(t *testing.T) (*App, func())`  
 - Per-request: `func InitRequestScope(db *sql.DB, logger *slog.Logger, userID string) *RequestHandler`
-- Caller ใน HTTP middleware: เรียก `InitRequestScope(db, logger, r.Header.Get("X-User-ID"))` ต้น request
+- Caller in HTTP middleware: call `InitRequestScope(db, logger, r.Header.Get("X-User-ID"))` at the start of the request
 
 **Common Pitfalls:**
-1. คาดหวัง runtime scope จาก Wire — Wire เป็น code generator; สร้าง injector ให้เรียกใหม่ต่อ request แทน
-2. สร้าง per-request injector ที่ include heavy singletons (DB pool) — ทำให้ recreate ทุก request; ควร pass singletons เป็น parameter
+1. Expecting runtime scope from Wire — Wire is a code generator; generate an injector and call it anew per request instead
+2. Building a per-request injector that includes heavy singletons (DB pool) — this recreates them on every request; pass singletons as parameters instead
 
-**Hands-on Deliverable:** สร้าง 2 injectors (prod + test); สร้าง per-request injector ที่รับ `*http.Request`; เขียน integration test ที่ใช้ test injector
+**Hands-on Deliverable:** Create 2 injectors (prod + test); create a per-request injector that takes `*http.Request`; write an integration test that uses the test injector
 
 ---
 
-## Chapter 9: Integration กับ HTTP และ gRPC
+## Chapter 9: Integration with HTTP and gRPC
 
 **Bloom levels:** Apply, Analyze, Evaluate
 
 **Learning Objectives:**
-1. (Apply) wire service stack สำหรับ net/http server ได้ (handler → service → repo → DB)
-2. (Apply) wire gRPC server ได้ (server impl → service → repo → DB + grpc.Server)
-3. (Analyze) ออกแบบ provider สำหรับ middleware chain ใน HTTP ได้
-4. (Evaluate) วิเคราะห์ boundary ระหว่าง Wire-managed components กับ manually-wired config ได้
+1. (Apply) Wire a service stack for a net/http server (handler → service → repo → DB)
+2. (Apply) Wire a gRPC server (server impl → service → repo → DB + grpc.Server)
+3. (Analyze) Design a provider for an HTTP middleware chain
+4. (Evaluate) Analyze the boundary between Wire-managed components and manually-wired config
 
 **Key Topics:**
-- HTTP pattern: provider สำหรับ `*http.ServeMux` หรือ router; provider สำหรับแต่ละ handler group; injector สร้าง `*http.Server`
-- gRPC pattern: provider สำหรับ `*grpc.Server`; provider register service implementation; cleanup = `server.GracefulStop`
-- Middleware: provider return `func(http.Handler) http.Handler`; compose ใน server provider
-- Config injection: `wire.Value(cfg)` หรือ provider function ที่ return config struct
-- Package layout สำหรับ real project: `cmd/`, `internal/wire/`, `internal/handler/`, `internal/service/`, `internal/repo/`
-- ประเด็น `wire.Value` vs provider function สำหรับ config
-- gRPC interceptor เป็น provider ได้
+- HTTP pattern: a provider for `*http.ServeMux` or a router; a provider for each handler group; an injector that builds `*http.Server`
+- gRPC pattern: a provider for `*grpc.Server`; a provider that registers the service implementation; cleanup = `server.GracefulStop`
+- Middleware: a provider returning `func(http.Handler) http.Handler`; composed in the server provider
+- Config injection: `wire.Value(cfg)` or a provider function that returns the config struct
+- Package layout for a real project: `cmd/`, `internal/wire/`, `internal/handler/`, `internal/service/`, `internal/repo/`
+- The `wire.Value` vs provider function question for config
+- A gRPC interceptor can be a provider
 
 **Code Snippet Ideas:**
 - HTTP: `func NewHTTPServer(mux *http.ServeMux, cfg Config) (*http.Server, func())` 
 - gRPC: `func NewGRPCServer(svc UserServiceServer, opts ...grpc.ServerOption) (*grpc.Server, func())`
 - Provider set layout: `var HTTPSet = wire.NewSet(NewHTTPServer, NewServeMux, handler.Set)`
-- `main.go` ที่สั้นมาก: `app, cleanup, err := wire.InitApp(cfg); defer cleanup(); app.Run()`
+- A very short `main.go`: `app, cleanup, err := wire.InitApp(cfg); defer cleanup(); app.Run()`
 
 **Common Pitfalls:**
-1. ใส่ `grpc.ServerOption` หรือ middleware config เป็น hardcode ใน provider — ควร inject ผ่าน Config struct
-2. สร้าง circular dependency ระหว่าง server provider กับ handler provider — ตรวจ graph ก่อน; handler ต้อง depend on server ทางเดียว
+1. Hardcoding `grpc.ServerOption` or middleware config inside a provider — inject it through a Config struct instead
+2. Creating a circular dependency between the server provider and the handler provider — check the graph first; the handler must depend on the server one way only
 
-**Hands-on Deliverable:** สร้าง minimal HTTP CRUD service (หรือ gRPC service) โดย wire ทุก layer; `main.go` ต้องไม่มี manual constructor calls
+**Hands-on Deliverable:** Build a minimal HTTP CRUD service (or gRPC service) wiring every layer; `main.go` must have no manual constructor calls
 
 ---
 
-## Chapter 10 (Capstone): โปรเจกต์สุดท้าย — Wire ใน Production Service
+## Chapter 10 (Capstone): Final Project — Wire in a Production Service
 
 **Bloom levels:** Create, Evaluate
 
 **Learning Objectives:**
-1. (Create) ออกแบบและสร้าง complete service ที่ใช้ทุก Wire concept ที่เรียนมาได้
-2. (Create) จัด provider sets ตาม layer architecture ได้อย่างถูกต้อง
-3. (Evaluate) ตรวจสอบ `wire_gen.go` ที่สร้างและอธิบาย dependency resolution ได้
-4. (Evaluate) เปรียบเทียบ architecture กับ alternative DI approaches และ justify การเลือก Wire ได้
+1. (Create) Design and build a complete service that uses every Wire concept learned
+2. (Create) Organize provider sets according to layer architecture correctly
+3. (Evaluate) Inspect the generated `wire_gen.go` and explain its dependency resolution
+4. (Evaluate) Compare the architecture with alternative DI approaches and justify the choice of Wire
 
 **Capstone Spec:**
 Build a "Task Manager" service with:
@@ -330,10 +330,10 @@ Build a "Task Manager" service with:
 - Common production patterns: config loading before Wire, structured logging provider, health check endpoint wiring
 
 **Common Pitfalls:**
-1. Over-engineering provider sets — ไม่ต้องมี set ทุก package; group by what changes together
+1. Over-engineering provider sets — you don't need a set per package; group by what changes together
 2. Forgetting to run `wire` after changing provider signatures — `wire_gen.go` outdated; add `go generate` to CI
 
-**Hands-on Deliverable:** Submit complete repository; `wire_gen.go` committed; `go build ./...` passes; reviewer reads `wire_gen.go` and traces full dependency graph
+**Hands-on Deliverable:** Submit complete repository; `wire_gen.go` committed; `go build ./...` passes; reviewer reads `wire_gen.go` and traces the full dependency graph
 
 ---
 

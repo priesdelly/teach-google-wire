@@ -82,11 +82,11 @@ index.html#/settings   → Language & progress settings
 const LESSONS = {
   1: {
     id: 1,
-    title: 'บทที่ 1: รู้จัก Google Wire',
+    title: 'Chapter 1: Meet Google Wire',
     sections: [
       {
-        heading: 'บทนำ',
-        content: 'Google Wire เป็น...',
+        heading: 'Introduction',
+        content: 'Google Wire is...',
         mediaUrl: 'assets/images/wire-intro.svg', // local asset, no fetch
       },
       // ... more sections
@@ -104,10 +104,10 @@ const QUESTIONS = {
   1: [ // Quiz 1 (chapter 1)
     {
       id: 1,
-      question: 'Google Wire คืออะไร?',
+      question: 'What is Google Wire?',
       options: ['A) ...', 'B) ...', 'C) ...', 'D) ...'],
       correctAnswer: 1, // index (0-based)
-      explanation: 'เพราะว่า...',
+      explanation: 'Because...',
     },
     // ... more questions
   ],
@@ -290,8 +290,8 @@ function migrate() {
 const CONFIG = {
   version: '1.0.0',
   chapters: [
-    { id: 1, title: 'บทที่ 1', lessonCount: 5, quizCount: 10 },
-    { id: 2, title: 'บทที่ 2', lessonCount: 6, quizCount: 12 },
+    { id: 1, title: 'Chapter 1', lessonCount: 5, quizCount: 10 },
+    { id: 2, title: 'Chapter 2', lessonCount: 6, quizCount: 12 },
   ],
   locales: ['th', 'en'],
   defaultLocale: 'th',

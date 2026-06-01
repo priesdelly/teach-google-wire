@@ -4,7 +4,7 @@
 
 ### Multiple-Choice Structure
 - **Format:** Single-answer multiple-choice only
-- **Options:** 4 choices labeled ก/ข/ค/ง (Thai convention)
+- **Options:** 4 choices labeled A/B/C/D
 - **Randomization:** Questions and options shuffled per attempt (seeded by user session to allow review consistency)
 - **Pass Threshold:** 80% (12/15 questions correct; 15 drawn from a ≥18 bank)
 - **Time Limit:** None (optional per chapter, if course enforces mastery via depth not speed)
@@ -29,10 +29,10 @@ A **Hinge Question** is a formative checkpoint that reveals genuine understandin
 **Anti-Pattern 1: Trivial Definition Recall**
 ```
 ❌ "What does DI stand for?"
-   ก. Dependency Injection
-   ข. Direct Initialization
-   ค. Data Infrastructure
-   ง. Dependency Instantiation
+   A. Dependency Injection
+   B. Direct Initialization
+   C. Data Infrastructure
+   D. Dependency Instantiation
 ```
 *Why it fails:* Tests vocabulary, not comprehension. A learner could memorize "DI = Dependency Injection" without understanding why it matters or how Wire implements it differently than Spring.
 
@@ -46,10 +46,10 @@ A **Hinge Question** is a formative checkpoint that reveals genuine understandin
 **Anti-Pattern 3: Multi-Concept Question**
 ```
 ❌ "When would you use wire.Bind with a factory provider and cleanup functions?"
-   ก. For interface implementation when the concrete type is expensive to construct
-   ข. For logging all dependency creations across your application
-   ค. To reduce binary size in Go programs
-   ง. When using Wire with gRPC services
+   A. For interface implementation when the concrete type is expensive to construct
+   B. For logging all dependency creations across your application
+   C. To reduce binary size in Go programs
+   D. When using Wire with gRPC services
 ```
 *Why it fails:* Conflates wire.Bind, providers, cleanup, and cost optimization. A learner might know wire.Bind but be confused by cleanup, making the answer ambiguous. Tests three concepts, reveals none clearly.
 
@@ -85,12 +85,12 @@ A **Hinge Question** is a formative checkpoint that reveals genuine understandin
     "objective": "Explain why Wire's compile-time DI differs from runtime DI frameworks",
     "i18n": {
       "th": {
-        "question": "เมื่อ Wire สร้าง dependency graph คอมไพล์เนื้อหาจะเกิดขึ้นเมื่อใด?",
+        "question": "When does Wire build the dependency graph and generate code?",
         "options": [
-          "ขณะที่โปรแกรมรันอยู่ (runtime)",
-          "ขณะคอมไพล์ Go code",
-          "เมื่อ container ถูกสร้างครั้งแรก",
-          "ขณะ unit test แต่ไม่ใช่ production"
+          "While the program is running (runtime)",
+          "During Go code compilation",
+          "When the container is first created",
+          "During unit tests, but not in production"
         ]
       },
       "en": {
@@ -119,7 +119,7 @@ A **Hinge Question** is a formative checkpoint that reveals genuine understandin
       }
     ],
     "explanation": {
-      "th": "Wire เป็น code generator ที่ทำงานในขั้นตอน `go generate` ซึ่งเป็นส่วนของการคอมไพล์ Go code มันสร้าง Go source code ของ dependency graph ไม่ใช่ทำการทำงานในขณะ runtime หรือ lazy initialization\n\nข้อได้เปรียบ:\n- ไม่มี runtime overhead (ไม่ต้อง reflect)\n- ข้อผิดพลาดถูกตรวจสอบในเวลาคอมไพล์\n- Binary size ประหยัด (เฉพาะ dependencies ที่ต้องการ)",
+      "th": "Wire is a code generator that runs during the `go generate` step, which is part of compiling Go code. It generates the Go source code for the dependency graph—it does not execute at runtime or do lazy initialization.\n\nAdvantages:\n- No runtime overhead (no reflection needed)\n- Errors are caught at compile-time\n- Saves binary size (only the dependencies you need)",
       "en": "Wire is a code generator that runs during `go generate` as part of the Go compilation pipeline. It generates Go source code representing your dependency graph—not executed at runtime or lazily. This gives Wire its key advantages: zero runtime overhead, compile-time error checking, and minimal binary size."
     },
     "codeExample": {
@@ -164,21 +164,21 @@ A **Hinge Question** is a formative checkpoint that reveals genuine understandin
   "objective": "Distinguish Wire's compile-time model from runtime DI frameworks",
   "i18n": {
     "th": {
-      "question": "ข้อใดคือข้อมูลที่ถูกต้องเกี่ยวกับวิธีการทำงานของ Wire?",
+      "question": "Which statement correctly describes how Wire works?",
       "options": [
-        "ก. Wire ใช้ reflection เพื่อสร้าง dependency graph ขณะรันโปรแกรม",
-        "ข. Wire สร้าง Go code ของ constructor ในตอนคอมไพล์ ไม่มี runtime overhead",
-        "ค. Wire เป็น library ที่ต้องเพิ่มเข้าไปใน dependency ของ binary",
-        "ง. Wire ทำให้ binary ใหญ่ขึ้นเพราะต้องจัดเก็บ dependency metadata"
+        "A. Wire uses reflection to build the dependency graph while the program runs",
+        "B. Wire generates the constructor's Go code at compile-time, with no runtime overhead",
+        "C. Wire is a library that must be added to the binary's dependencies",
+        "D. Wire increases binary size because it must store dependency metadata"
       ]
     },
     "en": {
       "question": "Which statement correctly describes how Wire works?",
       "options": [
-        "ก. Wire uses reflection to build dependency graphs at runtime",
-        "ข. Wire generates Go constructor code at compile-time with zero runtime cost",
-        "ค. Wire is a library included in the binary to resolve dependencies",
-        "ง. Wire increases binary size by storing dependency metadata"
+        "A. Wire uses reflection to build dependency graphs at runtime",
+        "B. Wire generates Go constructor code at compile-time with zero runtime cost",
+        "C. Wire is a library included in the binary to resolve dependencies",
+        "D. Wire increases binary size by storing dependency metadata"
       ]
     }
   },
@@ -198,7 +198,7 @@ A **Hinge Question** is a formative checkpoint that reveals genuine understandin
     }
   ],
   "explanation": {
-    "th": "Wire คือ code generator ที่ทำงานเป็นส่วนของ build process (via `go generate`) มันไม่ใช่ reflection framework เหมือน Spring ที่ทำงาน runtime Wire สร้าง plain Go code ของ constructor ในตอนคอมไพล์ ดังนั้นไม่มี overhead runtime ไม่ต้องเก็บ metadata และ binary ไม่ใหญ่ขึ้น",
+    "th": "Wire is a code generator that runs as part of the build process (via `go generate`). It is not a reflection framework like Spring that operates at runtime. Wire generates plain Go constructor code at compile-time, so there is no runtime overhead, no metadata to store, and the binary does not grow larger.",
     "en": "Wire is a code generator that runs as part of the build process (via `go generate`), not a reflection framework like Spring. It generates plain Go constructor code at compile-time, so there is zero runtime overhead, no metadata storage needed, and no binary bloat."
   },
   "tags": ["core", "foundational"]
@@ -216,21 +216,21 @@ A **Hinge Question** is a formative checkpoint that reveals genuine understandin
   "objective": "Recognize the role of wire.Build() in the code generation process",
   "i18n": {
     "th": {
-      "question": "ฟังก์ชัน wire.Build() ทำหน้าที่อะไรในไฟล์ wire_gen.go?",
+      "question": "What does the wire.Build() function do in the wire_gen.go file?",
       "options": [
-        "ก. โหลด dependency จาก configuration file ในตอน runtime",
-        "ข. ทำการ resolve ของ dependencies ที่ Wire สร้างโดยอัตโนมัติเมื่อคอมไพล์",
-        "ค. ประกาศ provider สำหรับ Wire ที่สามารถใช้ได้ในโปรแกรม",
-        "ง. จัดการการ cleanup ของ resources ในตอน graceful shutdown"
+        "A. Loads dependencies from a configuration file at runtime",
+        "B. Resolves the dependencies that Wire generates automatically at compile-time",
+        "C. Declares providers for Wire that can be used in the program",
+        "D. Manages resource cleanup during graceful shutdown"
       ]
     },
     "en": {
       "question": "What is the purpose of wire.Build() in the wire_gen.go file?",
       "options": [
-        "ก. Load dependencies from a config file at runtime",
-        "ข. Declare which dependencies Wire should wire together (Wire generates the actual constructor)",
-        "ค. Define providers available to the program at runtime",
-        "ง. Manage resource cleanup during graceful shutdown"
+        "A. Load dependencies from a config file at runtime",
+        "B. Declare which dependencies Wire should wire together (Wire generates the actual constructor)",
+        "C. Define providers available to the program at runtime",
+        "D. Manage resource cleanup during graceful shutdown"
       ]
     }
   },
@@ -250,7 +250,7 @@ A **Hinge Question** is a formative checkpoint that reveals genuine understandin
     }
   ],
   "explanation": {
-    "th": "wire.Build() เป็นการประกาศให้ Wire ทราบว่าเราต้องการให้ Wire สร้าง constructor อะไร โดยแยงผ่าน provider และ wire.Bind calls ให้กับ wire.Build() Wire code generator จะอ่านสิ่งนี้และสร้าง Go code ของ actual constructor ที่มีการทำให้ dependencies ถูก injected ถูกต้อง ฟังก์ชัน wire.Build() เองไม่มีการทำงานใด ๆ ในตอน runtime",
+    "th": "wire.Build() is a declaration telling Wire what constructor we want it to generate. You pass provider functions and wire.Bind calls to wire.Build(). The Wire code generator reads this and produces the actual constructor Go code that injects the dependencies correctly. The wire.Build() function itself does nothing at runtime.",
     "en": "wire.Build() is a declaration telling Wire what constructor to generate. You pass provider functions and wire.Bind calls to wire.Build(). The Wire code generator reads this and generates the actual Go constructor code. wire.Build() itself does nothing at runtime—it's a compile-time instruction."
   },
   "codeExample": {
@@ -272,21 +272,21 @@ A **Hinge Question** is a formative checkpoint that reveals genuine understandin
   "objective": "Recognize when wire.Bind() is required for interface implementation",
   "i18n": {
     "th": {
-      "question": "คุณมี interface Logger และ concrete type ConsoleLogger ต่อไปนี้:\n\ntype Logger interface {\n  Log(msg string)\n}\n\ntype ConsoleLogger struct {}\n\nfunc (c *ConsoleLogger) Log(msg string) { ... }\n\nฟังก์ชัน NewConsoleLogger() (*ConsoleLogger, error) ทำการสร้าง ConsoleLogger\n\nหากคุณต้องการ inject Logger interface (ไม่ใช่ ConsoleLogger) ในบริการอื่นไป wire.Build() ควรมีอะไร?",
+      "question": "You have the following interface Logger and concrete type ConsoleLogger:\n\ntype Logger interface {\n  Log(msg string)\n}\n\ntype ConsoleLogger struct {}\n\nfunc (c *ConsoleLogger) Log(msg string) { ... }\n\nThe function NewConsoleLogger() (*ConsoleLogger, error) creates the ConsoleLogger.\n\nIf you want to inject the Logger interface (not ConsoleLogger) into another service, what should wire.Build() contain?",
       "options": [
-        "ก. wire.Build(NewConsoleLogger) เพียงอย่างเดียว จะโยง ConsoleLogger ไป Logger โดยอัตโนมัติ",
-        "ข. wire.Build(NewConsoleLogger, wire.Bind(new(Logger), new(*ConsoleLogger)))",
-        "ค. wire.Build(NewConsoleLogger, NewLogger) โดย NewLogger return Logger interface",
-        "ง. wire.Build(NewConsoleLogger) และเปลี่ยนพารามิเตอร์ของ service เป็น *ConsoleLogger แทน Logger"
+        "A. wire.Build(NewConsoleLogger) alone will automatically bind ConsoleLogger to Logger",
+        "B. wire.Build(NewConsoleLogger, wire.Bind(new(Logger), new(*ConsoleLogger)))",
+        "C. wire.Build(NewConsoleLogger, NewLogger) where NewLogger returns the Logger interface",
+        "D. wire.Build(NewConsoleLogger) and change the service's parameter to *ConsoleLogger instead of Logger"
       ]
     },
     "en": {
       "question": "You have an interface Logger and concrete type ConsoleLogger:\n\ntype Logger interface {\n  Log(msg string)\n}\n\ntype ConsoleLogger struct {}\n\nfunc (c *ConsoleLogger) Log(msg string) { ... }\n\nNewConsoleLogger() (*ConsoleLogger, error) creates the ConsoleLogger.\n\nIf you want to inject the Logger interface (not ConsoleLogger) into another service, what should wire.Build() contain?",
       "options": [
-        "ก. wire.Build(NewConsoleLogger) alone—Wire auto-converts to Logger",
-        "ข. wire.Build(NewConsoleLogger, wire.Bind(new(Logger), new(*ConsoleLogger)))",
-        "ค. wire.Build(NewConsoleLogger, NewLogger) where NewLogger returns Logger",
-        "ง. wire.Build(NewConsoleLogger) and change service params to *ConsoleLogger instead"
+        "A. wire.Build(NewConsoleLogger) alone—Wire auto-converts to Logger",
+        "B. wire.Build(NewConsoleLogger, wire.Bind(new(Logger), new(*ConsoleLogger)))",
+        "C. wire.Build(NewConsoleLogger, NewLogger) where NewLogger returns Logger",
+        "D. wire.Build(NewConsoleLogger) and change service params to *ConsoleLogger instead"
       ]
     }
   },
@@ -306,7 +306,7 @@ A **Hinge Question** is a formative checkpoint that reveals genuine understandin
     }
   ],
   "explanation": {
-    "th": "Wire ไม่สามารถสร้าง implicit type conversion จาก *ConsoleLogger ไป Logger interface โดยอัตโนมัติ คุณต้องประกาศอย่างชัดเจนด้วย wire.Bind(new(Logger), new(*ConsoleLogger)) ซึ่งบอก Wire ว่า \"เมื่อใครต้องการ Logger interface ให้ใช้ *ConsoleLogger provider\" นี่เป็นปัญหาทั่วไป—ความลืม wire.Bind() นำไปสู่ compile-time error ระหว่าง go generate",
+    "th": "Wire cannot create an implicit type conversion from *ConsoleLogger to the Logger interface automatically. You must declare it explicitly with wire.Bind(new(Logger), new(*ConsoleLogger)), which tells Wire: \"when someone needs the Logger interface, use the *ConsoleLogger provider.\" This is a common problem—forgetting wire.Bind() leads to a compile-time error during go generate.",
     "en": "Wire cannot implicitly convert *ConsoleLogger to Logger. You must explicitly declare wire.Bind(new(Logger), new(*ConsoleLogger)), which tells Wire: \"when someone requests the Logger interface, use the *ConsoleLogger provider.\" This is a common mistake—forgetting wire.Bind() causes `go generate` to fail with a type mismatch error."
   },
   "codeExample": {
@@ -329,21 +329,21 @@ A **Hinge Question** is a formative checkpoint that reveals genuine understandin
   "objective": "Understand cleanup function order and resource lifecycle",
   "i18n": {
     "th": {
-      "question": "หากคุณมี cleanup function ดังนี้:\n\nfunc NewDB() (*DB, func(), error) {\n  db := &DB{...}\n  return db, func() { db.Close() }, nil\n}\n\nfunc NewService(db *DB) (*Service, func(), error) {\n  svc := &Service{DB: db}\n  return svc, func() { svc.Shutdown() }, nil\n}\n\nและสั่ง cleanup สองครั้ง ลำดับการทำงาน (order) ควรเป็นอย่างไร?",
+      "question": "If you have the following cleanup functions:\n\nfunc NewDB() (*DB, func(), error) {\n  db := &DB{...}\n  return db, func() { db.Close() }, nil\n}\n\nfunc NewService(db *DB) (*Service, func(), error) {\n  svc := &Service{DB: db}\n  return svc, func() { svc.Shutdown() }, nil\n}\n\nand you run cleanup for both, what should the execution order be?",
       "options": [
-        "ก. Shutdown service แล้วค่อย Close database (FIFO)",
-        "ข. Close database แล้วค่อย Shutdown service (LIFO)",
-        "ค. ลำดับไม่สำคัญเพราะทั้งสองเป็น independent resources",
-        "ง. Shutdown service และ Close database พร้อมกัน (parallel)"
+        "A. Shutdown the service, then close the database (FIFO)",
+        "B. Close the database, then shutdown the service (LIFO)",
+        "C. Order doesn't matter because both are independent resources",
+        "D. Shutdown the service and close the database at the same time (parallel)"
       ]
     },
     "en": {
       "question": "Given cleanup functions:\n\nfunc NewDB() (*DB, func(), error) {\n  return db, func() { db.Close() }, nil\n}\n\nfunc NewService(db *DB) (*Service, func(), error) {\n  return svc, func() { svc.Shutdown() }, nil\n}\n\nWhen cleanup runs, what order should the functions execute?",
       "options": [
-        "ก. Shutdown service, then close database (FIFO)",
-        "ข. Close database, then shutdown service (LIFO—reverse creation order)",
-        "ค. Order doesn't matter; they're independent resources",
-        "ง. Both shutdown and close execute in parallel"
+        "A. Shutdown service, then close database (FIFO)",
+        "B. Close database, then shutdown service (LIFO—reverse creation order)",
+        "C. Order doesn't matter; they're independent resources",
+        "D. Both shutdown and close execute in parallel"
       ]
     }
   },
@@ -363,7 +363,7 @@ A **Hinge Question** is a formative checkpoint that reveals genuine understandin
     }
   ],
   "explanation": {
-    "th": "Wire รันการ cleanup ในลำดับย้อนกลับ (LIFO—last in, first out) ที่มีการสร้าง resources Service ถูกสร้างหลังจาก DB ดังนั้นต้อง Shutdown service ก่อนจึงค่อย Close database นี่เป็นการเดินตามลำดับของ dependency tree—ทุกอย่างที่ขึ้นอยู่กับ DB ต้องทำการ cleanup ก่อนที่ DB จะปิด หากคุณทำให้ DB ปิดก่อน Service อาจจะพยายามใช้ DB ที่ปิดแล้ว ทำให้เกิด error",
+    "th": "Wire runs cleanups in reverse order (LIFO—last in, first out) of resource creation. Service was created after DB, so you must shutdown the service first and then close the database. This follows the order of the dependency tree—anything that depends on DB must be cleaned up before DB is closed. If you close DB first, Service might try to use a DB that is already closed, causing an error.",
     "en": "Wire executes cleanup functions in LIFO order (reverse of creation). Service was created after DB, so Service.Shutdown() must run before DB.Close(). This respects dependency order—anything that depends on DB must clean up first. Reversing this order risks \"use-after-close\" bugs."
   },
   "codeExample": {
@@ -386,21 +386,21 @@ A **Hinge Question** is a formative checkpoint that reveals genuine understandin
   "objective": "Compare singleton vs per-call provider scope across multiple injectors",
   "i18n": {
     "th": {
-      "question": "มีสอง injector สำหรับแอปพลิเคชัน:\n\nfunc InitAPIServer() (*http.Server, error) {\n  wire.Build(NewConfig, NewAPIHandler)\n  return nil, nil\n}\n\nfunc InitWorkerPool() (*WorkerPool, error) {\n  wire.Build(NewConfig, NewWorkerTask)\n  return nil, nil\n}\n\nทั้ง APIHandler และ WorkerTask ต้องการ *Config\nNewConfig() สร้าง Config instance ใหม่เมื่อเรียก\n\nสถานการณ์ใด ที่ API Server และ Worker Pool ใช้ Config instance เดียวกัน?",
+      "question": "You have two injectors for an application:\n\nfunc InitAPIServer() (*http.Server, error) {\n  wire.Build(NewConfig, NewAPIHandler)\n  return nil, nil\n}\n\nfunc InitWorkerPool() (*WorkerPool, error) {\n  wire.Build(NewConfig, NewWorkerTask)\n  return nil, nil\n}\n\nBoth APIHandler and WorkerTask need *Config.\nNewConfig() creates a new Config instance each time it is called.\n\nIn which situation do API Server and Worker Pool use the same Config instance?",
       "options": [
-        "ก. เสมอ Wire แชร์ singleton instances ข้ามทุก injector",
-        "ข. ไม่เคย ทุก injector สร้าง Config instance ใหม่อย่างอิสระ",
-        "ค. เมื่อ NewConfig เป็น global variable แทนการเป็น function provider",
-        "ง. เมื่อ InitAPIServer() และ InitWorkerPool() เรียกจาก injector เดียวกัน (single wire.Build call)"
+        "A. Always—Wire shares singleton instances across all injectors",
+        "B. Never—each injector creates a new Config instance independently",
+        "C. When NewConfig is a global variable instead of a function provider",
+        "D. When InitAPIServer() and InitWorkerPool() are called from the same injector (a single wire.Build call)"
       ]
     },
     "en": {
       "question": "You have two injectors:\n\nfunc InitAPIServer() (*http.Server, error) {\n  wire.Build(NewConfig, NewAPIHandler)\n  return nil, nil\n}\n\nfunc InitWorkerPool() (*WorkerPool, error) {\n  wire.Build(NewConfig, NewWorkerTask)\n  return nil, nil\n}\n\nBoth APIHandler and WorkerTask need *Config.\nNewConfig() creates a new instance each time.\n\nWhen do API Server and Worker Pool share the same Config instance?",
       "options": [
-        "ก. Always—Wire shares singletons across all injectors",
-        "ข. Never—each injector creates independent Config instances",
-        "ค. When NewConfig is a global variable, not a provider function",
-        "ง. When InitAPIServer() and InitWorkerPool() are called from the same injector (one wire.Build)"
+        "A. Always—Wire shares singletons across all injectors",
+        "B. Never—each injector creates independent Config instances",
+        "C. When NewConfig is a global variable, not a provider function",
+        "D. When InitAPIServer() and InitWorkerPool() are called from the same injector (one wire.Build)"
       ]
     }
   },
@@ -420,7 +420,7 @@ A **Hinge Question** is a formative checkpoint that reveals genuine understandin
     }
   ],
   "explanation": {
-    "th": "Wire ไม่มี global singleton registry ทุก injector สร้างกราฟ dependency แยกออกจากกัน หาก InitAPIServer() และ InitWorkerPool() เป็น injector คนละตัว และทั้งสองเรียก NewConfig() ก็จะได้ Config instance คนละตัว หากคุณต้องการแชร์ Config ให้สร้าง injector ที่สูงกว่า (parent injector) ที่สร้าง Config เพียงครั้งเดียว แล้วทำให้ทั้ง API Server และ Worker Pool ขึ้นอยู่กับ injector นี้",
+    "th": "Wire has no global singleton registry. Each injector builds its own separate dependency graph. If InitAPIServer() and InitWorkerPool() are different injectors and both call NewConfig(), they each get a different Config instance. If you want to share Config, create a higher-level injector (a parent injector) that builds Config only once, and make both API Server and Worker Pool depend on this injector.",
     "en": "Wire has no global singleton registry. Each injector builds its own independent dependency graph. If InitAPIServer() and InitWorkerPool() are separate injectors, each calls NewConfig() independently—two instances. To share a Config, create a parent injector that builds Config once, and make both APIServer and WorkerPool depend on it."
   },
   "codeExample": {
@@ -443,21 +443,21 @@ A **Hinge Question** is a formative checkpoint that reveals genuine understandin
   "objective": "Understand error handling in provider function signatures",
   "i18n": {
     "th": {
-      "question": "ฟังก์ชัน provider ของคุณ NewDatabase() ต้องการจัดการ error ในกรณีที่การเชื่อมต่อ database ล้มเหลว ข้อใดคือ signature ที่ถูกต้อง?",
+      "question": "Your provider function NewDatabase() needs to handle errors in case the database connection fails. Which is the correct signature?",
       "options": [
-        "ก. func NewDatabase() *Database { ... }",
-        "ข. func NewDatabase() (*Database, error) { ... }",
-        "ค. func NewDatabase() (error, *Database) { ... }",
-        "ง. func NewDatabase() *Database { return nil } // ไม่จัดการ error"
+        "A. func NewDatabase() *Database { ... }",
+        "B. func NewDatabase() (*Database, error) { ... }",
+        "C. func NewDatabase() (error, *Database) { ... }",
+        "D. func NewDatabase() *Database { return nil } // does not handle errors"
       ]
     },
     "en": {
       "question": "Your NewDatabase() provider needs to handle errors if the connection fails. What is the correct signature?",
       "options": [
-        "ก. func NewDatabase() *Database { ... }",
-        "ข. func NewDatabase() (*Database, error) { ... }",
-        "ค. func NewDatabase() (error, *Database) { ... }",
-        "ง. func NewDatabase() *Database { return nil } // no error handling"
+        "A. func NewDatabase() *Database { ... }",
+        "B. func NewDatabase() (*Database, error) { ... }",
+        "C. func NewDatabase() (error, *Database) { ... }",
+        "D. func NewDatabase() *Database { return nil } // no error handling"
       ]
     }
   },
@@ -477,7 +477,7 @@ A **Hinge Question** is a formative checkpoint that reveals genuine understandin
     }
   ],
   "explanation": {
-    "th": "Go convention คือ function ที่อาจล้มเหลวจะคืน (value, error) ไม่ใช่ (error, value) Wire รองรับ provider ที่คืน error—หาก NewDatabase() ล้มเหลว Wire จะส่ง error ที่สร้างไปเป็นคืนค่าของ InitApp() (injector function) สิ่งนี้ช่วยให้คุณจัดการ initialization errors อย่างเหมาะสม",
+    "th": "The Go convention is that a function that may fail returns (value, error), not (error, value). Wire supports providers that return an error—if NewDatabase() fails, Wire propagates the resulting error as the return value of InitApp() (the injector function). This lets you handle initialization errors appropriately.",
     "en": "Go convention is (value, error) return order, not (error, value). Wire supports providers that return errors. If NewDatabase() fails, Wire propagates the error as the return value of your injector function (e.g., InitApp()). This allows proper error handling during initialization."
   },
   "codeExample": {
@@ -500,21 +500,21 @@ A **Hinge Question** is a formative checkpoint that reveals genuine understandin
   "objective": "Evaluate tradeoffs between Wire and manual dependency construction",
   "i18n": {
     "th": {
-      "question": "คุณกำลังเขียน Go service ที่มี 8 dependencies และ 3 cleanup functions การใช้ Wire เจนเนเรเตอร์นั้นให้ประโยชน์อะไร เทียบกับการเขียน constructor แบบ manual?",
+      "question": "You're writing a Go service with 8 dependencies and 3 cleanup functions. What benefit does using the Wire generator provide compared to writing the constructor manually?",
       "options": [
-        "ก. Wire ทำให้ code รันเร็วกว่า compile-time dependency resolution",
-        "ข. Wire ตรวจสอบความถูกต้องของ dependency graph ในเวลาคอมไพล์ ลดขนาด binary และลบ boilerplate",
-        "ค. Wire สามารถ reload dependencies โดยไม่ต้อง restart แอปพลิเคชัน",
-        "ง. Wire ลดจำนวน packages ที่ต้องนำเข้า"
+        "A. Wire makes the code run faster via compile-time dependency resolution",
+        "B. Wire validates the dependency graph at compile-time, reduces binary size, and removes boilerplate",
+        "C. Wire can reload dependencies without restarting the application",
+        "D. Wire reduces the number of packages that must be imported"
       ]
     },
     "en": {
       "question": "You're writing a Go service with 8 dependencies and 3 cleanup functions. What benefits does Wire bring vs a manual constructor?",
       "options": [
-        "ก. Wire makes code run faster via compile-time resolution",
-        "ข. Wire validates the dependency graph at compile-time, reduces binary size, eliminates boilerplate",
-        "ค. Wire allows reloading dependencies without restarting the app",
-        "ง. Wire reduces the number of imports needed"
+        "A. Wire makes code run faster via compile-time resolution",
+        "B. Wire validates the dependency graph at compile-time, reduces binary size, eliminates boilerplate",
+        "C. Wire allows reloading dependencies without restarting the app",
+        "D. Wire reduces the number of imports needed"
       ]
     }
   },
@@ -534,7 +534,7 @@ A **Hinge Question** is a formative checkpoint that reveals genuine understandin
     }
   ],
   "explanation": {
-    "th": "Wire ให้ประโยชน์สามอย่าง:\n\n1. **Compile-time verification:** ไม่มี typos หรือ missing dependencies—ทุกอย่างถูกตรวจสอบเมื่อคอมไพล์\n\n2. **Eliminate boilerplate:** constructor manual จะมี 50+ บรรทัด (checking nil, error handling ซ้ำ ๆ) Wire สร้าง minimal code ที่จำเป็นเท่านั้น\n\n3. **Binary efficiency:** Wire เพิ่มเฉพาะ code ที่จำเป็น ไม่มี reflection metadata overhead\n\nสำหรับ 8 dependencies, manual constructor เสี่ยงต่อ error (ลืม bind one, ผิด cleanup order, missing nil checks) Wire ตรวจสอบจังหวะคอมไพล์—ลดบัคต่อ 30% ในการ initialization",
+    "th": "Wire provides three benefits:\n\n1. **Compile-time verification:** No typos or missing dependencies—everything is checked at compile time.\n\n2. **Eliminate boilerplate:** A manual constructor would be 50+ lines (nil checks, repetitive error handling). Wire generates only the minimal code needed.\n\n3. **Binary efficiency:** Wire adds only the necessary code, with no reflection metadata overhead.\n\nFor 8 dependencies, a manual constructor is error-prone (forgetting a binding, wrong cleanup order, missing nil checks). Wire checks at compile time—reducing initialization bugs by around 30%.",
     "en": "Wire provides three key benefits:\n\n1. **Compile-time verification:** No typos or missing dependencies—all caught at build time.\n2. **Eliminate boilerplate:** A manual constructor for 8 dependencies is 50+ lines of repetitive code. Wire generates only what's needed.\n3. **Binary efficiency:** Wire adds only necessary code; zero reflection overhead.\n\nFor 8 dependencies, manual construction is error-prone (forgotten bindings, wrong cleanup order, missing nil checks). Wire catches these at compile-time."
   },
   "relatedConcepts": ["wire-benefits", "code-generation", "boilerplate"],
@@ -553,21 +553,21 @@ A **Hinge Question** is a formative checkpoint that reveals genuine understandin
   "objective": "Understand Wire's use of struct field injection and its implications",
   "i18n": {
     "th": {
-      "question": "Wire เลือกใช้ struct field injection (ส่ง dependency เป็น struct fields) แทน constructor parameters ทำไมวิธีนี้ในบริบทของ code generation?",
+      "question": "Wire chooses to use struct field injection (passing dependencies as struct fields) instead of constructor parameters. Why is this approach used in the context of code generation?",
       "options": [
-        "ก. เพราะ struct fields ใช้ memory น้อยกว่า parameters",
-        "ข. เพราะ code generator สามารถจัดการ struct fields ด้วย reflection ได้ง่ายกว่า",
-        "ค. เพราะ code generator สามารถมี field tags (เช่น `wire:\"\"` ) เพื่อส่ง hints และลดความสับสน",
-        "ง. เพราะ struct fields ทำให้ testing ง่ายขึ้น"
+        "A. Because struct fields use less memory than parameters",
+        "B. Because a code generator can handle struct fields more easily with reflection",
+        "C. Because a code generator can have field tags (such as `wire:\"\"`) to pass hints and reduce confusion",
+        "D. Because struct fields make testing easier"
       ]
     },
     "en": {
       "question": "Why does Wire use struct field injection (populating struct fields) instead of constructor parameters?",
       "options": [
-        "ก. Struct fields use less memory than parameters",
-        "ข. A code generator can handle struct fields via reflection more easily",
-        "ค. A code generator can use field tags (like `wire:\"\"`) for hints and clarity",
-        "ง. Struct fields make testing easier"
+        "A. Struct fields use less memory than parameters",
+        "B. A code generator can handle struct fields via reflection more easily",
+        "C. A code generator can use field tags (like `wire:\"\"`) for hints and clarity",
+        "D. Struct fields make testing easier"
       ]
     }
   },
@@ -587,7 +587,7 @@ A **Hinge Question** is a formative checkpoint that reveals genuine understandin
     }
   ],
   "explanation": {
-    "th": "Wire ใช้ struct fields (โดยมี struct tags) เพราะ:\n\n1. **Code clarity:** field tags ให้ hints อย่างชัดเจนว่า field ไหนต้องการ inject (เช่น `wire:\"\"` หรือ `inject:\"true\"`)\n\n2. **No constructor explosion:** หากมี 10+ dependencies ฟังก์ชัน constructor จะมี parameters ยาว ๆ—อ่านยากและ edit ยาก Struct fields นั้นชัดเจน—คุณเห็น field ใดจะถูก inject\n\n3. **Flexibility:** code generator สามารถใช้ field tags เพื่อสั่ง Wire (เช่น \"inject this optional field\" หรือ \"this field is populated elsewhere\")\n\nในทุก case Wire ยังคง generates plain Go code—ไม่มี runtime reflection",
+    "th": "Wire uses struct fields (with struct tags) because:\n\n1. **Code clarity:** Field tags give explicit hints about which field needs injection (e.g., `wire:\"\"` or `inject:\"true\"`).\n\n2. **No constructor explosion:** With 10+ dependencies, the constructor function would have a long list of parameters—hard to read and hard to edit. Struct fields are clear—you can see which field will be injected.\n\n3. **Flexibility:** The code generator can use field tags to instruct Wire (e.g., \"inject this optional field\" or \"this field is populated elsewhere\").\n\nIn every case, Wire still generates plain Go code—no runtime reflection.",
     "en": "Wire uses struct fields (with struct tags) because:\n\n1. **Code clarity:** Struct tags provide explicit hints about which fields are injected (e.g., `wire:\"\"`).\n2. **No constructor bloat:** 10+ dependencies as constructor params becomes unwieldy. Struct fields are self-documenting.\n3. **Flexibility:** Field tags allow the code generator to express hints like \"optional,\" \"exclude,\" or custom directives.\n\nWire still generates plain Go code—no runtime reflection."
   },
   "codeExample": {
@@ -738,7 +738,7 @@ A learner who skimmed the chapter or memorized definitions would likely fail (ge
 ## 7. Implementation Roadmap (Sketch)
 
 ### Phase 1: Frontend (React component)
-- Quiz display: question, options (ก/ข/ค/ง), radio buttons
+- Quiz display: question, options (A/B/C/D), radio buttons
 - Timer (optional)
 - Submit & see results page (score, explanation, retry button)
 - localStorage integration
