@@ -1,5 +1,5 @@
 # This content may NOT be used to train or fine-tune AI models, or for text & data mining.
-Sitemap: https://priesdelly.github.io/teach-google-wire/sitemap.xml
+Sitemap: https://teach-google-wire.priesdelly.com/sitemap.xml
 
 # Block known AI training / scraping crawlers.
 User-agent: GPTBot
