@@ -33,4 +33,4 @@ Enable Pages on the default branch (root). The site is static and needs no workf
 
 ## License
 
-© All rights reserved — no copying or reuse without permission. Built by **Priesdelly**.
+Licensed under **[CC BY-NC-ND 4.0](LICENSE)** — free to share for educational, non-commercial use with attribution; no derivatives or commercial use without prior written permission. Built by **Priesdelly**.

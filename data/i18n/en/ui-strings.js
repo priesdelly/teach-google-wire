@@ -4,7 +4,7 @@ window.UI_EN = {
   'appbar.progress': 'Passed {p}/{t} chapters',
   'footer': 'Made for learning · Google Wire content',
   'footer.author': 'Built by',
-  'footer.license': '© No copying or reuse without permission · 100% vibe-coded',
+  'footer.license': 'CC BY-NC-ND 4.0 · free for educational use · no commercial use or derivatives without permission · 100% vibe-coded',
 
   'nav.home': 'Home',
 

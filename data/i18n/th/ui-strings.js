@@ -4,7 +4,7 @@ window.UI_TH = {
   'appbar.progress': 'ผ่าน {p}/{t} บท',
   'footer': 'สร้างเพื่อการเรียนรู้ · เนื้อหา Google Wire',
   'footer.author': 'พัฒนาโดย',
-  'footer.license': '© ห้ามคัดลอกหรือดัดแปลงโดยไม่ได้รับอนุญาต · พัฒนาจาก vibe code 100%',
+  'footer.license': 'CC BY-NC-ND 4.0 · ใช้เพื่อการศึกษาฟรี ห้ามใช้เชิงพาณิชย์/ดัดแปลงโดยไม่ได้รับอนุญาต · พัฒนาจาก vibe code 100%',
 
   'nav.home': 'หน้าหลัก',
 
