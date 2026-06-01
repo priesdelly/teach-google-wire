@@ -337,22 +337,8 @@ Build a "Task Manager" service with:
 
 ---
 
-## Recommended Quiz Density
+## Quiz density
 
-**Rationale for counts:** 80% on 5 questions means one miss = fail (luck-sensitive). At 10 four-option MCQs, random guessing yields ~10% chance of passing — the threshold is genuinely earned. High-stakes mechanical chapters (build tags, provider signatures, cleanup LIFO, bind argument order) warrant more questions because a single misconception causes silent bugs in production.
+Quiz format, bank sizes, scoring, and the authoring bar are owned by **`03-assessment.md`** — not duplicated here. In brief (as shipped): **every chapter ships a ≥18-question bank, draws 15 shuffled questions per attempt, and passes at ≥80% (≥12/15)**. High-stakes mechanical chapters (build tags, provider signatures, cleanup LIFO, `wire.Bind` argument order) lean toward the deeper, scenario-heavy end of their banks because a single misconception there causes silent production bugs.
 
-| Chapter | Questions | Rationale |
-|---|---|---|
-| 1 | 8 | Conceptual; broader range of understanding questions |
-| 2 | 12 | Mechanical: build tags, file roles, CLI workflow — high mistake surface |
-| 3 | 12 | Core: provider rules, wire.Build, error diagnosis |
-| 4 | 10 | Set composition, duplicate pitfalls |
-| 5 | 12 | wire.Bind arg order, missing provider — critical correctness |
-| 6 | 8 | wire.Struct field rules, encapsulation trade-offs |
-| 7 | 14 | Cleanup LIFO order, mid-init error behavior — most complex semantics |
-| 8 | 12 | Scoping misconceptions, multiple injectors |
-| 9 | 10 | Integration patterns, circular dependency detection |
-| 10 (Capstone) | 15 | Synthesis; scenario-based questions across all chapters |
-| **Total** | **113** | Average ~11/chapter; density matches concept complexity |
-
-**Pass threshold enforcement:** Each chapter quiz must be passed at ≥80% before unlocking the next. Capstone quiz (15 questions) requires ≥80% (12/15 correct) and is the final graduation gate.
+Quizzes are a per-chapter **mastery checkpoint, not a gate** — chapters are open and may be taken in any order (see `01-vision-scope.md`).

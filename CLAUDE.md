@@ -6,7 +6,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## What this project is
 
-An interactive, Thai-language website that teaches **Google Wire** (Go's compile-time DI tool) chapter by chapter. Each chapter ends with a multiple-choice quiz; scoring ≥80% marks it passed. Goal: a graduate genuinely understands and can apply Wire at an expert level. Design docs live in `docs/plan/` (written in **English**). **Canonical Thai values** (UI terms, difficulty labels, "จุดสังเกต", etc.) are frozen in `docs/plan/08-thai-reference.md` — consult it before changing any Thai-facing string so translations stay consistent; if it disagrees with `data/i18n/th/ui-strings.js`, the code wins.
+An interactive, Thai-language website that teaches **Google Wire** (Go's compile-time DI tool) chapter by chapter. Each chapter ends with a multiple-choice quiz; scoring ≥80% marks it passed. Goal: a graduate genuinely understands and can apply Wire at an expert level. **Before non-trivial work, read `docs/plan/00-onboarding.md`** — it is the entry point to the design docs in `docs/plan/` (written in **English**), a numbered series `00`→`08`: `01` vision/scope, `02` curriculum, `03` assessment, `04` architecture, `05` i18n+SEO, `06`/`07` CourseKit, `08` Thai reference. **Canonical Thai values** (UI terms, difficulty labels, "จุดสังเกต", etc.) are frozen in `docs/plan/08-thai-reference.md` — consult it before changing any Thai-facing string so translations stay consistent; if it disagrees with `data/i18n/th/ui-strings.js`, the code wins.
 
 ## Commands
 
