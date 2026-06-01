@@ -1,0 +1,15 @@
+# OS
+.DS_Store
+Thumbs.db
+
+# Editors
+.vscode/
+.idea/
+*.swp
+
+# Claude Code local settings (keep project CLAUDE.md tracked)
+.claude/settings.local.json
+
+# Logs / temp
+*.log
+.cache/

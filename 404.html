@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Not found · Google Wire</title>
+  <meta name="robots" content="noindex">
+  <script>
+    // Send unknown paths to the course home (origin-relative to this 404's host).
+    (function () {
+      var m = location.pathname.match(/^(.*?\/)(en|th)\//);
+      var baseRoot = m ? m[1] : location.pathname.replace(/[^/]*$/, '');
+      location.replace(baseRoot + 'en/index.html');
+    })();
+  </script>
+</head>
+<body>
+  <p>Page not found. Go to the <a href="en/index.html">Google Wire course</a>.</p>
+</body>
+</html>

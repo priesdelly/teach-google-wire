@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cleanup Functions and Error Handling · Google Wire (Chapter 7)</title>
+  <meta name="description" content="Chapter 7 of the Google Wire course: handling cleanup functions and errors returned by providers in Google Wire Go applications.">
+  <link rel="canonical" href="https://priesdelly.github.io/teach-google-wire/en/chapter/ch07/">
+  <link rel="alternate" hreflang="en" href="https://priesdelly.github.io/teach-google-wire/en/chapter/ch07/">
+  <link rel="alternate" hreflang="th" href="https://priesdelly.github.io/teach-google-wire/th/chapter/ch07/">
+  <link rel="alternate" hreflang="x-default" href="https://priesdelly.github.io/teach-google-wire/en/chapter/ch07/">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="Cleanup Functions and Error Handling · Google Wire">
+  <meta property="og:description" content="Handling cleanup functions and errors returned by providers in Google Wire Go applications.">
+  <meta property="og:url" content="https://priesdelly.github.io/teach-google-wire/en/chapter/ch07/">
+
+  <!-- Do NOT use this content to train or fine-tune AI / for text & data mining -->
+  <meta name="robots" content="noai, noimageai">
+  <meta name="googlebot" content="noai, noimageai">
+  <meta name="tdm-reservation" content="1">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../../themes/editorial/theme.css">
+  <link rel="stylesheet" href="../../../core/css/core.css">
+  <link rel="stylesheet" href="../../../themes/editorial/hljs.css">
+
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@type":"LearningResource","name":"Cleanup Functions and Error Handling","learningResourceType":"Lesson","inLanguage":"en","position":7,"isPartOf":{"@type":"Course","name":"Google Wire — from zero to expert"},"teaches":"Google Wire dependency injection in Go"}
+  </script>
+  <script>window.PAGE = { locale: "en", view: "lesson", chapterId: "ch07", rel: "../../../" };</script>
+</head>
+<body>
+  <header class="appbar">
+    <a class="appbar__brand" href="../../../en/index.html">
+      <span class="appbar__mark" aria-hidden="true">◑</span>
+      <span class="appbar__title">Google&nbsp;Wire</span>
+      <span class="appbar__sub" id="appbar-sub"></span>
+    </a>
+    <div class="appbar__progress" id="appbar-progress" hidden>
+      <span class="appbar__progress-label" id="appbar-progress-label"></span>
+      <span class="appbar__progress-track"><span class="appbar__progress-fill" id="appbar-progress-fill"></span></span>
+    </div>
+    <div class="appbar__lang" id="lang-switch" hidden></div>
+  </header>
+
+  <main id="app" class="app">
+    <noscript><div class="page read"><p>This interactive lesson needs JavaScript enabled. See the course home: <a href="../../../en/index.html">Google Wire course</a>.</p></div></noscript>
+  </main>
+
+  <footer class="appfoot">
+    <span id="appfoot-text"></span>
+    <span class="appfoot__author" id="appfoot-author"></span>
+    <span class="appfoot__license" id="appfoot-license"></span>
+  </footer>
+
+  <script src="../../../core/vendor/highlight.min.js"></script>
+  <script src="../../../core/vendor/go.min.js"></script>
+  <script src="../../../core/js/coursekit.js"></script>
+  <script src="../../../core/js/storage.js"></script>
+  <script src="../../../core/js/i18n.js"></script>
+  <script src="../../../core/js/quiz.js"></script>
+  <script src="../../../core/js/render.js"></script>
+  <script src="../../../data/i18n/en/ui-strings.js"></script>
+  <script src="../../../data/i18n/en/chapters/lessons-ch07.js"></script>
+  <script src="../../../data/i18n/en/chapters/questions-ch07.js"></script>
+  <script src="../../../course.config.js"></script>
+</body>
+</html>

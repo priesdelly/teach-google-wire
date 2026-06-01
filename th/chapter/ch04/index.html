@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Provider Sets และ wire.NewSet · Google Wire (บทที่ 4)</title>
+  <meta name="description" content="บทที่ 4 ของคอร์ส Google Wire: จัดกลุ่ม Provider ด้วย wire.NewSet เพื่อความเป็นระเบียบใน Go">
+  <link rel="canonical" href="https://priesdelly.github.io/teach-google-wire/th/chapter/ch04/">
+  <link rel="alternate" hreflang="en" href="https://priesdelly.github.io/teach-google-wire/en/chapter/ch04/">
+  <link rel="alternate" hreflang="th" href="https://priesdelly.github.io/teach-google-wire/th/chapter/ch04/">
+  <link rel="alternate" hreflang="x-default" href="https://priesdelly.github.io/teach-google-wire/en/chapter/ch04/">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="Provider Sets และ wire.NewSet · Google Wire">
+  <meta property="og:description" content="จัดกลุ่ม Provider ด้วย wire.NewSet เพื่อความเป็นระเบียบใน Go">
+  <meta property="og:url" content="https://priesdelly.github.io/teach-google-wire/th/chapter/ch04/">
+
+  <!-- Do NOT use this content to train or fine-tune AI / for text & data mining -->
+  <meta name="robots" content="noai, noimageai">
+  <meta name="googlebot" content="noai, noimageai">
+  <meta name="tdm-reservation" content="1">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../../themes/editorial/theme.css">
+  <link rel="stylesheet" href="../../../core/css/core.css">
+  <link rel="stylesheet" href="../../../themes/editorial/hljs.css">
+
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@type":"LearningResource","name":"Provider Sets และ wire.NewSet","learningResourceType":"Lesson","inLanguage":"th","position":4,"isPartOf":{"@type":"Course","name":"Google Wire — เรียนให้เป็น expert"},"teaches":"Google Wire dependency injection in Go"}
+  </script>
+  <script>window.PAGE = { locale: "th", view: "lesson", chapterId: "ch04", rel: "../../../" };</script>
+</head>
+<body>
+  <header class="appbar">
+    <a class="appbar__brand" href="../../../th/index.html">
+      <span class="appbar__mark" aria-hidden="true">◑</span>
+      <span class="appbar__title">Google&nbsp;Wire</span>
+      <span class="appbar__sub" id="appbar-sub"></span>
+    </a>
+    <div class="appbar__progress" id="appbar-progress" hidden>
+      <span class="appbar__progress-label" id="appbar-progress-label"></span>
+      <span class="appbar__progress-track"><span class="appbar__progress-fill" id="appbar-progress-fill"></span></span>
+    </div>
+    <div class="appbar__lang" id="lang-switch" hidden></div>
+  </header>
+
+  <main id="app" class="app">
+    <noscript><div class="page read"><p>บทเรียน interactive นี้ต้องเปิดใช้งาน JavaScript ดูหน้าหลักคอร์ส: <a href="../../../th/index.html">คอร์ส Google Wire</a>.</p></div></noscript>
+  </main>
+
+  <footer class="appfoot">
+    <span id="appfoot-text"></span>
+    <span class="appfoot__author" id="appfoot-author"></span>
+    <span class="appfoot__license" id="appfoot-license"></span>
+  </footer>
+
+  <script src="../../../core/vendor/highlight.min.js"></script>
+  <script src="../../../core/vendor/go.min.js"></script>
+  <script src="../../../core/js/coursekit.js"></script>
+  <script src="../../../core/js/storage.js"></script>
+  <script src="../../../core/js/i18n.js"></script>
+  <script src="../../../core/js/quiz.js"></script>
+  <script src="../../../core/js/render.js"></script>
+  <script src="../../../data/i18n/th/ui-strings.js"></script>
+  <script src="../../../data/i18n/th/chapters/lessons-ch04.js"></script>
+  <script src="../../../data/i18n/th/chapters/questions-ch04.js"></script>
+  <script src="../../../course.config.js"></script>
+</body>
+</html>

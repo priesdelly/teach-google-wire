@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Google Wire — Learn it like an expert</title>
+  <meta name="description" content="A free, interactive course on Google Wire (Go's compile-time dependency injection). English & Thai.">
+  <link rel="canonical" href="https://priesdelly.github.io/teach-google-wire/en/">
+  <link rel="alternate" hreflang="en" href="https://priesdelly.github.io/teach-google-wire/en/">
+  <link rel="alternate" hreflang="th" href="https://priesdelly.github.io/teach-google-wire/th/">
+  <link rel="alternate" hreflang="x-default" href="https://priesdelly.github.io/teach-google-wire/en/">
+  <meta name="robots" content="noai, noimageai">
+  <meta name="tdm-reservation" content="1">
+
+  <script>
+    (function () {
+      function detect() {
+        var l = (navigator.languages && navigator.languages.length) ? navigator.languages : [navigator.language || 'en'];
+        for (var i = 0; i < l.length; i++) { if ((l[i] || '').toLowerCase().indexOf('th') === 0) return 'th'; }
+        return 'en';
+      }
+      var stored = null;
+      try { stored = JSON.parse(localStorage.getItem('wire:settings:locale')); } catch (e) {}
+      var loc = stored || detect();
+      if (loc !== 'en' && loc !== 'th') loc = 'en';
+      location.replace(loc + '/index.html');
+    })();
+  </script>
+</head>
+<body>
+  <noscript>
+    <p>Enter the course: <a href="en/index.html">English</a> · <a href="th/index.html">ไทย</a></p>
+  </noscript>
+</body>
+</html>

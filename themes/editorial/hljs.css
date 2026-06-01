@@ -1,0 +1,15 @@
+/* Syntax theme — driven by --code-* tokens from theme.css (re-skinnable) */
+.hljs { color: var(--ink); background: transparent; }
+.hljs-comment, .hljs-quote { color: var(--code-comment); font-style: italic; }
+.hljs-keyword, .hljs-literal, .hljs-selector-tag { color: var(--code-keyword); font-weight: 500; }
+.hljs-string, .hljs-regexp, .hljs-meta-string { color: var(--code-string); }
+.hljs-number, .hljs-symbol { color: var(--code-number); }
+.hljs-title, .hljs-title.function_, .hljs-section { color: var(--code-title); font-weight: 600; }
+.hljs-title.class_, .hljs-type, .hljs-built_in { color: var(--code-type); }
+.hljs-params { color: var(--ink); }
+.hljs-attr, .hljs-property { color: var(--code-attr); }
+.hljs-variable, .hljs-template-variable { color: var(--ink); }
+.hljs-operator, .hljs-punctuation { color: var(--ink-soft); }
+.hljs-meta { color: var(--code-meta); }
+.hljs-emphasis { font-style: italic; }
+.hljs-strong { font-weight: 700; }

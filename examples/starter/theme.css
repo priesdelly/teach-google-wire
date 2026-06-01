@@ -1,0 +1,13 @@
+/* Starter re-skin — token overrides only (loaded after editorial theme.css).
+   Proves CourseKit is themeable without touching core/: a cool indigo palette. */
+:root {
+  --paper:      #F7F7FB;
+  --paper-2:    #ECECF5;
+  --teal:       #6366F1;   /* indigo accent (was Go teal) */
+  --teal-deep:  #4338CA;
+  --teal-wash:  #ECEBFE;
+  --amber:      #C026D3;
+  --amber-wash: #FBEAFE;
+  --code-keyword: #4338CA;
+  --code-title:   #6366F1;
+}
