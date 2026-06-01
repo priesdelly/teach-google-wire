@@ -6,7 +6,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## What this project is
 
-An interactive, Thai-language website that teaches **Google Wire** (Go's compile-time DI tool) chapter by chapter. Each chapter ends with a multiple-choice quiz; scoring ≥80% marks it passed. Goal: a graduate genuinely understands and can apply Wire at an expert level. Plans live in `docs/plan/`.
+An interactive, Thai-language website that teaches **Google Wire** (Go's compile-time DI tool) chapter by chapter. Each chapter ends with a multiple-choice quiz; scoring ≥80% marks it passed. Goal: a graduate genuinely understands and can apply Wire at an expert level. Design docs live in `docs/plan/` (written in **English**). **Canonical Thai values** (UI terms, difficulty labels, "จุดสังเกต", etc.) are frozen in `docs/plan/08-thai-reference.md` — consult it before changing any Thai-facing string so translations stay consistent; if it disagrees with `data/i18n/th/ui-strings.js`, the code wins.
 
 ## Commands
 
@@ -45,17 +45,27 @@ There is no build step, bundler, linter, or package manager — files are served
 
 ### Data authoring (must match the renderer exactly)
 
-Content and questions are plain JS globals under `data/i18n/<locale>/`. Author Chapters 2–10 in the same shapes:
+Content and questions are plain JS globals, **one file per chapter** under `data/i18n/<locale>/chapters/`: `lessons-ch0X.js` and `questions-ch0X.js`. Each file **augments** the shared global rather than replacing it — `(window.LESSONS_TH = window.LESSONS_TH || {}).ch0X = {...}` / `(window.QUESTIONS_TH ||= {}).ch0X = [...]`. The lesson shell loads only its own chapter's two files; the home shell loads **all** `lessons-ch*.js` (for titles) and no questions. Author Chapters 2–10 in the same shapes:
 
-**`lessons.js` → `window.LESSONS_TH = { ch0X: { title, sections:[block...] } }`.** Block `type`s (the ONLY ones `renderBlock` supports):
+**`lessons-ch0X.js` → `window.LESSONS_TH.ch0X = { title, sections:[block...] }`.** Block `type`s (the ONLY ones `renderBlock` supports):
 - `heading` `{level,text}` · `paragraph` `{html}` (inline `<strong> <code> <mark> <a>`)
 - `code` `{lang:'go', code, highlightLines:[n], annotations:[{line,text}]}` — highlighted lines + a "จุดสังเกต" note under that line; **use generously**
 - `callout` `{variant:'observe'|'tip'|'note'|'warning', title?, html}` — `observe` = "จุดสังเกต" (amber)
 - `list` `{ordered,items:[html]}` · `image` `{src,alt,caption?}`
 
-**`questions.js` → `window.QUESTIONS_TH = { ch0X: [ {...} ] }`.** Each: `id, difficulty, bloomLevel, question, code?(go), options:[4 plain strings — NO ก/ข/ค/ง prefix, UI adds them], correctAnswerIndex:0-3, explanation`. **≥18 per chapter** (15 drawn). Vary `correctAnswerIndex`; distractors must encode real misconceptions.
+**`questions-ch0X.js` → `window.QUESTIONS_TH.ch0X = [ {...} ]`.** Each: `id, difficulty, bloomLevel, question, code?(go), options:[4 plain strings — NO ก/ข/ค/ง prefix, UI adds them], correctAnswerIndex:0-3, explanation`. **≥18 per chapter** (15 drawn). Vary `correctAnswerIndex`; distractors must encode real misconceptions.
 
-After authoring, validate the JS loads and conforms (eval under a fake `window`, check block/option shape) before trusting subagent output.
+After authoring, validate the JS loads and conforms before trusting subagent output — load it under a fake `window` and check the shape:
+
+```bash
+node -e 'globalThis.window={}; require("./data/i18n/th/chapters/lessons-ch04.js");
+  const l=window.LESSONS_TH.ch04; if(!l.title||!Array.isArray(l.sections)) throw "bad lesson";
+  console.log(l.title, l.sections.length, "blocks");'
+node -e 'globalThis.window={}; require("./data/i18n/th/chapters/questions-ch04.js");
+  const q=window.QUESTIONS_TH.ch04; if(q.length<18) throw "need >=18";
+  q.forEach(x=>{if(x.options.length!==4||x.correctAnswerIndex<0||x.correctAnswerIndex>3) throw "bad q "+x.id});
+  console.log(q.length, "questions ok");'
+```
 
 ## UI design language (the established look — keep it consistent)
 
