@@ -21,7 +21,18 @@ sitemap.xml  robots.txt  404.html
 docs/plan/            design docs
 ```
 
-The Wire course **is** the primary CourseKit consumer and lives at the repo root so its SEO URLs stay at the origin root. To build a different course on the same engine, see [`core/README.md`](core/README.md).
+The Wire course **is** the primary CourseKit consumer and lives at the repo root so its SEO URLs stay at the origin root.
+
+## CourseKit engine
+
+The interaction engine is extracted into **CourseKit** (`core/`) — a tiny, build-free course framework you can reuse for other courses. A course supplies only **data + config + theme**:
+
+- **One namespace** — everything lives on `window.CourseKit`; no global collisions.
+- **Content-driven** — lessons and quizzes render from plain JS data; block renderers are pluggable (`CourseKit.blocks.register`).
+- **Themeable** — all design values are CSS tokens in `themes/`; re-skin by swapping a `<link>` or overriding tokens.
+- **i18n + SEO built in** — per-locale bundles with fallback, real per-page URLs, multiple-choice quizzes with scoring/progress in `localStorage`.
+
+**Want to build your own course?** Start with the **[Quickstart](core/README.md#quickstart--build-your-first-course-in-5-steps)** in `core/README.md`, then copy the runnable **[`examples/starter/`](examples/starter/)** (it has its [own README](examples/starter/README.md)) — a minimal second course that runs on the same engine with zero engine edits. `core/README.md` is the full authoring reference.
 
 ## Deploying to GitHub Pages
 

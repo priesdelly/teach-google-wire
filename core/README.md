@@ -4,6 +4,18 @@ A vanilla **content-driven course engine** — no build step, no framework, runs
 
 Everything attaches to one global, `window.CourseKit` (so it never collides with the native `window.Storage`).
 
+## Quickstart — build your first course in 5 steps
+
+The fastest path is to **copy a working course and edit it**:
+
+1. **Copy** [`examples/starter/`](../examples/starter/) to a new folder — it's a minimal, runnable course (single locale, 2 chapters) using only data + config + theme.
+2. **Run it** to confirm it works: from the repo root, `python3 -m http.server 8000`, then open `http://localhost:8000/examples/starter/en/`.
+3. **List your chapters** in `course.config.js` and set `courseId` / `quizSize` / `passThreshold` (see [`CourseKit.init`](#coursekitinitconfig) below).
+4. **Write content** in `data/lessons.js` and `data/questions.js` (shapes in [Content schema](#content-schema)).
+5. **Add one shell per page** (home + each lesson) — copy an existing shell and adjust `window.PAGE` + relative paths (see [Make a new course](#make-a-new-course)).
+
+The rest of this file is the **reference** for each of those pieces. See [`examples/starter/README.md`](../examples/starter/README.md) for a per-file walkthrough of that example.
+
 ## Make a new course
 
 ```
