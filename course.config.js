@@ -4,6 +4,7 @@
 CourseKit.init({
   courseId: 'wire',
   author: 'Priesdelly',
+  authorUrl: 'https://github.com/priesdelly',
   passThreshold: 80,        // percent required to pass a quiz
   quizSize: 15,             // questions drawn per attempt (bank holds more)
   locales: ['en', 'th'],

@@ -95,7 +95,12 @@
       setText('appbar-sub', CK.i18n.t('appbar.sub'));
       setText('appfoot-text', CK.i18n.t('footer'));
       var author = document.getElementById('appfoot-author');
-      if (author && config.author) author.innerHTML = CK.i18n.t('footer.author') + ' <strong>' + esc(config.author) + '</strong>';
+      if (author && config.author) {
+        var name = config.authorUrl
+          ? '<a href="' + esc(config.authorUrl) + '" target="_blank" rel="noopener"><strong>' + esc(config.author) + '</strong></a>'
+          : '<strong>' + esc(config.author) + '</strong>';
+        author.innerHTML = CK.i18n.t('footer.author') + ' ' + name;
+      }
       setText('appfoot-license', CK.i18n.t('footer.license'));
       renderLangSwitch();
       var mountEl = document.querySelector(config.mount || '#app');
