@@ -304,8 +304,8 @@ code, pre, kbd { font-family: var(--font-mono); font-feature-settings: "liga" 0;
 .code__body { font-family: var(--font-mono); font-size: .9rem; line-height: 1.7; padding: var(--s-4) 0; min-width: max-content; }
 
 .cline { display: flex; align-items: baseline; padding: 0 var(--s-5) 0 0; position: relative; }
-.cline__no { user-select: none; text-align: right; min-width: 3.2ch; padding: 0 var(--s-4); color: var(--ink-faint); opacity: .6; flex-shrink: 0; }
-.cline__code { white-space: pre; }
+.cline__no { user-select: none; text-align: right; min-width: calc(3.2ch + var(--s-4) * 2); padding: 0 var(--s-4); color: var(--ink-faint); opacity: .6; flex-shrink: 0; }
+.cline__code { white-space: pre; tab-size: 4; }
 
 /* highlighted line — the "จุดสังเกต" visual cue */
 .cline.is-hl { background: var(--amber-wash); }
