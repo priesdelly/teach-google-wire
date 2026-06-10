@@ -12,7 +12,7 @@ Two independent parts. Part A (i18n core) is needed regardless. Part B converts 
 
 ### Part A — i18n core (de-hardcode Thai)
 
-> **STATUS: DONE & browser-verified**, plus extras beyond this plan — full EN translation of all chapters, **English default**, navigator-based auto-detect (Thai device → th, else en), EN-first switcher, and lesson resume. Details in `07-additions.md` §5–8. Part B (SEO multi-page) below is still pending.
+> **STATUS: DONE & browser-verified**, plus extras beyond this plan — full EN translation of all chapters, **English default**, navigator-based auto-detect (Thai device → th, else en), EN-first switcher, and lesson resume. Part B (SEO multi-page) below is also done.
 
 1. **Extract every hardcoded Thai string from `js/ui.js` into `UI_<LOC>` bundles** (`data/i18n/<loc>/ui-strings.js`) and render via the existing `I18n.t(key, vars)` (it already supports `{var}` interpolation — `js/i18n.js`). ~35 strings across: appbar progress (`'ผ่าน {p}/{t} บท'`), home hero (title/lead/stats), chapter status (done/locked/best-score), lesson kicker `'บทที่ {n}'` + nav + quiz CTA, quiz title/`'ข้อ {n}/{total}'`/prev-next-submit, results verdict (pass/fail)/`'ตอบถูก {c}/{t}'`/explanation label/action buttons/stored summary, coming-soon, locked.
 2. **Locale-ize the constant maps in `js/ui.js`** — move into the `UI_<LOC>` bundle and read through `I18n`: `OPT_KEYS` (ก/ข/ค/ง ↔ A/B/C/D), `DIFF` (เริ่มต้น/กลาง/ขั้นสูง ↔ Beginner/…), `CALLOUT` default titles (จุดสังเกต/เคล็ดลับ/หมายเหตุ/ระวัง). Icons (emoji) stay shared.
@@ -22,7 +22,7 @@ Two independent parts. Part A (i18n core) is needed regardless. Part B converts 
 
 ### Part B — Multi-page static for SEO (no generation)
 
-> **STATUS: DONE & verified.** 22 real page URLs (`/<loc>/`, `/<loc>/chapter/<chId>/`) + root locale redirect + `sitemap.xml` + `robots.txt` (with Sitemap + AI blocks) + `404.html`. Each shell carries static `<title>`/canonical/hreflang/OG/JSON-LD and `window.PAGE`; engine is page-driven; quiz/results are in-page hash views; nav uses real relative URLs (work on http / GitHub Pages subpath / file://). SEO origin is the hardcoded placeholder `https://priesdelly.github.io/teach-google-wire` — change it across the shells + sitemap + 404 if the deploy URL differs. Details in `07-additions.md` §9.
+> **STATUS: DONE & verified.** 22 real page URLs (`/<loc>/`, `/<loc>/chapter/<chId>/`) + root locale redirect + `sitemap.xml` + `robots.txt` (with Sitemap + AI blocks) + `404.html`. Each shell carries static `<title>`/canonical/hreflang/OG/JSON-LD and `window.PAGE`; engine is page-driven; quiz/results are in-page hash views; nav uses real relative URLs (work on http / GitHub Pages subpath / file://). SEO origin is hardcoded as `https://teach-google-wire.priesdelly.com` — change it across the shells + sitemap + 404 if the deploy URL differs.
 
 Replace hash routing with **real directory URLs**, one hand-authored static HTML shell per indexable page. Only SEO-valuable pages become real files; quiz/results stay client-side views (they don't need indexing) to keep file count down.
 

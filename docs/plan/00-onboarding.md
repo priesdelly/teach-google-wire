@@ -1,18 +1,17 @@
 # Plan 00 — Onboarding: explore & understand before you touch anything
 
-> This is the **first** doc to read when you start working on this repo (after `CLAUDE.md`). This project is **already built and browser-verified** — a complete, bilingual, 10-chapter Google Wire course running on the in-house **CourseKit** engine. Most work here is **extension or maintenance**, not greenfield. **Do not edit content, the engine, or the UI until you understand the current state** — changing this codebase on a shaky mental model is the #1 way to break working, shipped behavior.
+> This is the **first** doc to read when you start working on this repo (after `CLAUDE.md`). This project is **already built and browser-verified** — a complete, bilingual, 10-chapter Google Wire course running on the in-house engine (`core/`). Most work here is **extension or maintenance**, not greenfield. **Do not edit content, the engine, or the UI until you understand the current state** — changing this codebase on a shaky mental model is the #1 way to break working, shipped behavior.
 
 ## What this repo is (30-second map)
 
-- **The Wire course is the consumer at the repo root** — `/index.html` (locale redirect), `/en/`, `/th/`, `data/`, `course.config.js`. Its public SEO URLs live at the origin root, which is why it is **not** tucked under `examples/`.
-- **CourseKit is the engine** — `core/` (theme-agnostic JS + structural CSS) + `themes/editorial/` (all design tokens). Reusable; the Wire course supplies only **data + config + theme**.
-- **`examples/starter/`** — a throwaway second course proving the engine is reusable with zero engine edits.
-- **`docs/plan/`** — the design docs (this folder). **Everything in `docs/plan/` is about THIS project (the Wire course / CourseKit) and nothing else.**
+- **The Wire course lives at the repo root** — `/index.html` (locale redirect), `/en/`, `/th/`, `data/`, `course.config.js` — so its public SEO URLs live at the origin root.
+- **The engine** — `core/` (theme-agnostic JS + structural CSS) + `themes/editorial/` (all design tokens). The course supplies only **data + config + theme**. It is internal to this project — do **not** extract it into a reusable framework.
+- **`docs/plan/`** — the design docs (this folder). **Everything in `docs/plan/` is about THIS project (the Wire course) and nothing else.**
 
 ## Reading order (do this in sequence)
 
 1. **`CLAUDE.md`** (repo root) — the operating manual: MANDATORY rules, architecture, the full UI design language + color tokens, product constraints, i18n. Read it end to end.
-2. **`core/README.md`** — the CourseKit authoring reference (shells, `CourseKit.init`, content schema, theming) + Quickstart.
+2. **`core/README.md`** — the engine authoring reference (shells, `CourseKit.init`, content schema, theming).
 3. **The engine files** — read each and be able to explain what it puts on `window.CourseKit` and how the pieces connect:
 
    | File | What you must understand |
@@ -29,9 +28,8 @@
    - `01-vision-scope.md` — why the course exists, target learner, graduate outcomes, scope/non-goals (the `02` curriculum is derived from this).
    - `02-curriculum.md` — the 10-chapter backwards-design outline + Bloom levels.
    - `03-assessment.md` — quiz/question-bank blueprint (≥18 per chapter, 15 drawn, pass ≥80%, open chapters).
-   - `04-architecture.md` — as-built architecture: multi-page static + CourseKit, data shapes, storage, routing, SEO.
+   - `04-architecture.md` — as-built architecture: multi-page static + the engine, data shapes, storage, routing, SEO.
    - `05-i18n-seo.md` — bilingual model + the SEO multi-page design (real per-page URLs, canonical/hreflang/JSON-LD).
-   - `06-coursekit-framework.md` + `07-additions.md` — how the engine was extracted into CourseKit (one namespace, theme split, reuse proof).
    - `08-thai-reference.md` — **canonical Thai values** (UI terms, difficulty labels, "จุดสังเกต"). Consult before changing any Thai-facing string; if it disagrees with `data/i18n/th/ui-strings.js`, **the code wins**.
 5. **The actual content** — skim `data/i18n/en/` and `data/i18n/th/`: `ui-strings.js` and a couple of `chapters/lessons-chNN.js` / `questions-chNN.js` so the authored data shape is concrete (each file **augments** its global: `(window.LESSONS_TH ||= {}).chNN = {...}`).
 
@@ -60,4 +58,4 @@ Click a chapter → take the quiz → submit → results; switch language in the
 
 ## Status
 
-Per `CLAUDE.md`: full engine/UI, all **10 chapters** (207 reviewed questions), fully bilingual (EN default), SEO multi-page, and the CourseKit extraction are **all done and browser-verified**. No pending roadmap item. Treat new requests as extensions to a working system — read the relevant plan doc above first.
+Per `CLAUDE.md`: full engine/UI, all **10 chapters** (207 reviewed questions), fully bilingual (EN default), and SEO multi-page are **all done and browser-verified**. No pending roadmap item. Treat new requests as extensions to a working system — read the relevant plan doc above first.

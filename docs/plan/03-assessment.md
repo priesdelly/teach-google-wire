@@ -1,6 +1,6 @@
 # Assessment & Quiz System
 
-> As-built. Describes the quiz system that shipped on CourseKit (`core/js/quiz.js` + `core/js/storage.js`) and the authoring bar for question banks. The graduate outcomes being assessed come from `01-vision-scope.md`; the per-chapter objectives from `02-curriculum.md`. `CLAUDE.md` is the canonical quick reference.
+> As-built. Describes the quiz system that shipped (`core/js/quiz.js` + `core/js/storage.js`) and the authoring bar for question banks. The graduate outcomes being assessed come from `01-vision-scope.md`; the per-chapter objectives from `02-curriculum.md`. `CLAUDE.md` is the canonical quick reference.
 
 ## 1. Quiz format
 

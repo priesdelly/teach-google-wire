@@ -1,31 +1,18 @@
-# CourseKit
+# Course engine (`core/`)
 
-A vanilla **content-driven course engine** — no build step, no framework, runs from `file://` and GitHub Pages. A course supplies **data + config + theme**; CourseKit renders the home page, lessons, quizzes, scoring, progress, and i18n.
+A vanilla **content-driven course engine**, internal to this project — no build step, no framework, runs from `file://` and GitHub Pages. The course supplies **data + config + theme**; the engine renders the home page, lessons, quizzes, scoring, progress, and i18n.
 
 Everything attaches to one global, `window.CourseKit` (so it never collides with the native `window.Storage`).
 
-## Quickstart — build your first course in 5 steps
-
-The fastest path is to **copy a working course and edit it**:
-
-1. **Copy** [`examples/starter/`](../examples/starter/) to a new folder — it's a minimal, runnable course (single locale, 2 chapters) using only data + config + theme.
-2. **Run it** to confirm it works: from the repo root, `python3 -m http.server 8000`, then open `http://localhost:8000/examples/starter/en/`.
-3. **List your chapters** in `course.config.js` and set `courseId` / `quizSize` / `passThreshold` (see [`CourseKit.init`](#coursekitinitconfig) below).
-4. **Write content** in `data/lessons.js` and `data/questions.js` (shapes in [Content schema](#content-schema)).
-5. **Add one shell per page** (home + each lesson) — copy an existing shell and adjust `window.PAGE` + relative paths (see [Make a new course](#make-a-new-course)).
-
-The rest of this file is the **reference** for each of those pieces. See [`examples/starter/README.md`](../examples/starter/README.md) for a per-file walkthrough of that example.
-
-## Make a new course
+## Course layout
 
 ```
-your-course/
+/                           repo root = the course
   course.config.js          CourseKit.init({...})
-  theme.css                 (optional) token overrides
-  data/
-    ui-strings.js           window.UI_<LOC>        (chrome strings)
-    lessons.js              window.LESSONS_<LOC>   ({ chId: { title, sections:[block] } })
-    questions.js            window.QUESTIONS_<LOC> ({ chId: [ question ] })
+  data/i18n/<loc>/
+    ui-strings.js                window.UI_<LOC>             (chrome strings)
+    chapters/lessons-chNN.js     window.LESSONS_<LOC>.chNN   ({ title, sections:[block] })
+    chapters/questions-chNN.js   window.QUESTIONS_<LOC>.chNN ([ question ])
   <loc>/index.html                       home shell
   <loc>/chapter/<chId>/index.html        lesson shell
 ```
@@ -36,23 +23,22 @@ Each **shell** is static HTML that (1) declares its page context and (2) loads c
 <script>window.PAGE = { locale: "en", view: "lesson", chapterId: "ch01", rel: "../../../" };</script>
 ...
 <link rel="stylesheet" href="…/themes/editorial/theme.css">   <!-- tokens -->
-<link rel="stylesheet" href="…/your-course/theme.css">         <!-- optional overrides -->
 <link rel="stylesheet" href="…/core/css/core.css">             <!-- structure -->
-<link rel="stylesheet" href="…/themes/editorial/hljs.css">     <!-- syntax (code courses) -->
+<link rel="stylesheet" href="…/themes/editorial/hljs.css">     <!-- syntax -->
 ...
-<script src="…/core/vendor/highlight.min.js"></script>         <!-- code courses only -->
+<script src="…/core/vendor/highlight.min.js"></script>         <!-- lesson shells only -->
 <script src="…/core/js/coursekit.js"></script>
 <script src="…/core/js/storage.js"></script>
 <script src="…/core/js/i18n.js"></script>
 <script src="…/core/js/quiz.js"></script>
 <script src="…/core/js/render.js"></script>
-<script src="…/your-course/data/ui-strings.js"></script>
-<script src="…/your-course/data/lessons.js"></script>
-<script src="…/your-course/data/questions.js"></script>       <!-- lesson shells only -->
-<script src="…/your-course/course.config.js"></script>         <!-- LAST: calls init, boots -->
+<script src="…/data/i18n/<loc>/ui-strings.js"></script>
+<script src="…/data/i18n/<loc>/chapters/lessons-chNN.js"></script>
+<script src="…/data/i18n/<loc>/chapters/questions-chNN.js"></script> <!-- lesson shells only -->
+<script src="…/course.config.js"></script>                     <!-- LAST: calls init, boots -->
 ```
 
-`PAGE`: `view` is `"home"` or `"lesson"`; `rel` is the relative path back to the course root (so links work on http, GitHub Pages subpaths, and `file://`). Quiz and results are in-page hash views (`#quiz` / `#results`) on the lesson shell — no extra files.
+`PAGE`: `view` is `"home"` or `"lesson"`; `rel` is the relative path back to the site root (so links work on http, GitHub Pages subpaths, and `file://`). Quiz and results are in-page hash views (`#quiz` / `#results`) on the lesson shell — no extra files. The **home** shell loads **all** `lessons-ch*.js` (for chapter titles) and no questions; a **lesson** shell loads only its own chapter's two files.
 
 ## `CourseKit.init(config)`
 
@@ -88,9 +74,4 @@ The optional **"who is this for"** panel renders only if `ui-strings` defines `a
 
 ## Theming
 
-All design values are CSS custom properties defined in a theme (`themes/editorial/theme.css`): palette, geometry, fonts, and `--code-*` syntax tokens. Re-skin by either swapping that `<link>` or loading a small override file after it (see `examples/starter/theme.css`). `core/css/core.css` contains only structural rules referencing `var(--*)` — never edit it to restyle.
-
-## Examples
-
-- `examples/google-wire/` → the Wire course **lives at the repo root** (`/en/`, `/th/`, `data/`, `course.config.js`) so its public SEO URLs stay at the origin root.
-- `examples/starter/` → a minimal 2-chapter, single-locale course with an indigo theme override — proof that a new course runs on `core/` with **zero engine edits**.
+All design values are CSS custom properties defined in a theme (`themes/editorial/theme.css`): palette, geometry, fonts, and `--code-*` syntax tokens. Re-skin by either swapping that `<link>` or loading a small override file after it. `core/css/core.css` contains only structural rules referencing `var(--*)` — never edit it to restyle.

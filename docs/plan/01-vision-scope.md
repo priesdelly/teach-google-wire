@@ -61,4 +61,4 @@ No certificates/credentials; no analytics backend; no community/forum; no moneti
 
 ## Status
 
-**Shipped & browser-verified.** All outcomes above are realized: 10 chapters, 207 reviewed questions, fully bilingual (EN default), SEO multi-page, runs on the CourseKit engine. See `07-additions.md` for the as-built record and `CLAUDE.md` for current behavior. This doc is the retained statement of *why* the course is shaped the way it is.
+**Shipped & browser-verified.** All outcomes above are realized: 10 chapters, 207 reviewed questions, fully bilingual (EN default), SEO multi-page, runs on the in-house engine (`core/`). See `CLAUDE.md` for current behavior. This doc is the retained statement of *why* the course is shaped the way it is.
